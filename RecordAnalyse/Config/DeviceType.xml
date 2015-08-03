@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Devices>
+
+  <Device>
+    <Name>25Hz轨道电路</Name>
+    <Type>9</Type>
+    <Properties>
+      <Property>
+        <Name>轨道电压</Name>
+        <Type>1</Type>
+        <Source>0@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      <Property>
+        <Name>轨道相位角</Name>
+        <Type>1</Type>
+        <Source>1-2@6</Source>
+        <Unit>°</Unit>
+        <Limit>0-360</Limit>
+        <Range>0-360</Range>
+      </Property>
+    </Properties>
+  </Device>
+  
+  <Device>
+    <Name>道岔</Name>
+    <Type>10</Type>
+    <Properties>
+      <Property>
+        <Name>定位直流电压</Name>
+        <Type>1</Type>
+        <Source>0@0</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      <Property>
+        <Name>反位直流电压</Name>
+        <Type>1</Type>
+        <Source>1@0</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+
+      <Property>
+        <Name>定位交流电压</Name>
+        <Type>1</Type>
+        <Source>2@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+
+      <Property>
+        <Name>反位交流电压</Name>
+        <Type>1</Type>
+        <Source>3@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+
+      <Property>
+        <Name>A相电流</Name>
+        <Type>2</Type>
+        <Source>4@5</Source>
+        <Unit>A</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      <Property>
+        <Name>B相电流</Name>
+        <Type>2</Type>
+        <Source>5@5</Source>
+        <Unit>A</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+
+      <Property>
+        <Name>C相电流</Name>
+        <Type>2</Type>
+        <Source>6@5</Source>
+        <Unit>A</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      
+      
+    </Properties>
+  </Device>
+
+
+  
+  <Device>
+    <Name>ZPW2000A</Name>
+    <Type>12</Type>
+    <Properties>
+      <Property>
+        <Name>功出电压</Name>
+        <Type>1</Type>
+        <Source>0@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-30</Range>
+      </Property>
+      <Property>
+        <Name>功出载频</Name>
+        <Type>1</Type>
+        <Source>0@2</Source>
+        <Unit>Hz</Unit>
+        <Limit>500-3000</Limit>
+        <Range>1600-2700</Range>
+      </Property>
+
+      <Property>
+        <Name>功出低频</Name>
+        <Type>1</Type>
+        <Source>0@3</Source>
+        <Unit>Hz</Unit>
+        <Limit>7-30</Limit>
+        <Range>8-30</Range>
+      </Property>
+
+      <Property>
+        <Name>受端电压</Name>
+        <Type>1</Type>
+        <Source>1@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      <Property>
+        <Name>受端载频</Name>
+        <Type>1</Type>
+        <Source>1@2</Source>
+        <Unit>Hz</Unit>
+        <Limit>1600-2700</Limit>
+        <Range>1600-2700</Range>
+      </Property>
+
+      <Property>
+        <Name>受端低频</Name>
+        <Type>1</Type>
+        <Source>1@3</Source>
+        <Unit>Hz</Unit>
+        <Limit>7-30</Limit>
+        <Range>8-30</Range>
+      </Property>
+
+    </Properties>
+  </Device>
+
+
+    <Device>
+    <Name>无绝缘移频</Name>
+    <Type>13</Type>
+    <Properties>
+      <Property>
+        <Name>发送电压</Name>
+        <Type>1</Type>
+        <Source>0@1</Source>
+        <Unit>V</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-30</Range>
+      </Property>
+      <Property>
+        <Name>轨入中心频</Name>
+        <Type>1</Type>
+        <Source>0@2</Source>
+        <Unit>Hz</Unit>
+        <Limit>500-3000</Limit>
+        <Range>500-900</Range>
+      </Property>
+
+      <Property>
+        <Name>轨入低频</Name>
+        <Type>1</Type>
+        <Source>0@3</Source>
+        <Unit>Hz</Unit>
+        <Limit>7-30</Limit>
+        <Range>5-28</Range>
+      </Property>
+
+    
+
+    </Properties>
+  </Device>
+
+  
+   <Device>
+    <Name>信号机</Name>
+    <Type>14</Type>
+    <Properties>
+      <Property>
+        <Name>DJ点灯电流</Name>
+        <Type>1</Type>
+        <Source>0@0</Source>
+        <Unit>mA</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+      <Property>
+        <Name>2DJ点灯电流</Name>
+        <Type>1</Type>
+        <Source>1@0</Source>
+        <Unit>mA</Unit>
+        <Limit>0-100</Limit>
+        <Range>0-80</Range>
+      </Property>
+
+    </Properties>
+  </Device>
+
+</Devices>

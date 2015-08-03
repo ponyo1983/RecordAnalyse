@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F3C280F5-0DB3-48B4-A72B-2D3F57843F84}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RecordAnalyse</RootNamespace>
+    <AssemblyName>RecordAnalyse</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>USB red.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraWizard.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DSP\APFFT.cs" />
+    <Compile Include="DSP\DSPUtil.cs" />
+    <Compile Include="DSP\FFTPlan.cs" />
+    <Compile Include="DSP\FilterManager.cs" />
+    <Compile Include="DSP\IFilter.cs" />
+    <Compile Include="DSP\SignalUtil.cs" />
+    <Compile Include="FormDayCurve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDayCurve.Designer.cs">
+      <DependentUpon>FormDayCurve.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRawData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRawData.Designer.cs">
+      <DependentUpon>FormRawData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSignalSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSignalSelect.Designer.cs">
+      <DependentUpon>FormSignalSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSwitchCurve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSwitchCurve.Designer.cs">
+      <DependentUpon>FormSwitchCurve.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DiskChannel.cs" />
+    <Compile Include="GUI\SelectChannel.cs" />
+    <Compile Include="Record\CalcItem.cs" />
+    <Compile Include="Record\DeviceInfo.cs" />
+    <Compile Include="Record\DiskManager.cs" />
+    <Compile Include="Signal\ADBlock.cs" />
+    <Compile Include="Signal\SignalArgs.cs" />
+    <Compile Include="Utils\CRC16.cs" />
+    <Compile Include="Utils\DiskUtil.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDataWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDataWizard.Designer.cs">
+      <DependentUpon>FormDataWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\HalfFloat.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDataWizard.resx">
+      <DependentUpon>FormDataWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDayCurve.resx">
+      <DependentUpon>FormDayCurve.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSignalSelect.resx">
+      <DependentUpon>FormSignalSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSwitchCurve.resx">
+      <DependentUpon>FormSwitchCurve.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Record\SignalChannel.cs" />
+    <Compile Include="Record\RecordControl.cs" />
+    <Compile Include="Record\RecordDevice.cs" />
+    <Compile Include="Record\RecordDisk.cs" />
+    <Compile Include="Record\RecordFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config\Devices.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\DeviceType.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRawData.resx">
+      <DependentUpon>FormRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="toolbox.ico" />
+    <Content Include="USB red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CB9A14B8-2684-4682-9D57-6FE02344225F}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConfigManager\ConfigManager.csproj">
+      <Project>{007388A6-A5FE-4362-B2F2-6A1E40358D89}</Project>
+      <Name>ConfigManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataStorage\DataStorage.csproj">
+      <Project>{03586EBC-5040-452C-BBD9-D3A3C5C7DE04}</Project>
+      <Name>DataStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\fftwlib\fftwlib.csproj">
+      <Project>{BEA875B8-E28A-49C5-8E7E-6512DA65F7E1}</Project>
+      <Name>fftwlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UltraChart\UltraChart.csproj">
+      <Project>{69708DE3-17B0-4A3C-9AB2-D6D5F9C510FD}</Project>
+      <Name>UltraChart</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
