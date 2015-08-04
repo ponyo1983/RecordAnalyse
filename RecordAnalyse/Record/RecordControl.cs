@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RecordAnalyse.Utils;
+using System.IO;
 
 namespace RecordAnalyse.Record
 {
@@ -10,10 +11,10 @@ namespace RecordAnalyse.Record
 
         string Tag = "";
 
+        byte[] data=new byte[512];
         public RecordControl(DiskUtil disk)
         {
             this.IsValid = false;
-            byte[] data=new byte[512];
 
             disk.Read(data, 0, data.Length);
 
@@ -46,6 +47,11 @@ namespace RecordAnalyse.Record
         {
             get;
             private set;
+        }
+
+        public void Write(FileStream fs)
+        {
+            fs.Write(data, 0, data.Length);
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace RecordAnalyse
 {
-    public partial class FormDataWizard : Form
+    public partial class FormImportWizard : Form
     {
 
         const int MaxSrcs = 40;
@@ -45,7 +45,7 @@ namespace RecordAnalyse
 
         bool exportOK=false;
 
-        public FormDataWizard()
+        public FormImportWizard()
         {
             InitializeComponent();
 

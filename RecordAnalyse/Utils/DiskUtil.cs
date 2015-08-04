@@ -48,9 +48,17 @@ namespace RecordAnalyse.Utils
                 if (DriverName == null && DriverName.Trim().Length == 0) return;
                 this.DriveName = DriverName;
 
-                _DriverHandle = CreateFileA("\\\\.\\" + this.DriveName.Trim(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                if (DriverName.Length >= 3)
+                {
+                    _DriverStream = new FileStream(DriverName, FileMode.Open, FileAccess.Read);
+                }
+                else
+                {
+                    _DriverHandle = CreateFileA("\\\\.\\" + this.DriveName.Trim(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
 
-                _DriverStream = new System.IO.FileStream(_DriverHandle, System.IO.FileAccess.Read);
+                    _DriverStream = new System.IO.FileStream(_DriverHandle, System.IO.FileAccess.Read);
+                }
+               
 
       
             }

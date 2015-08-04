@@ -23,7 +23,7 @@ namespace RecordAnalyse
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
-            using (FormDataWizard form = new FormDataWizard())
+            using (FormImportWizard form = new FormImportWizard())
             {
                 form.ShowDialog();
             }
@@ -68,6 +68,22 @@ namespace RecordAnalyse
             else
             {
                 formRawData.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        private void simpleButton5_Click(object sender, EventArgs e)
+        {
+            using (FormExportWizard form = new FormExportWizard())
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void simpleButton6_Click(object sender, EventArgs e)
+        {
+            using (FormAbout form = new FormAbout())
+            {
+                form.ShowDialog();
             }
         }
     }

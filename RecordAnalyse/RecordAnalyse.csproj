@@ -88,6 +88,12 @@
     <Compile Include="DSP\FilterManager.cs" />
     <Compile Include="DSP\IFilter.cs" />
     <Compile Include="DSP\SignalUtil.cs" />
+    <Compile Include="FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDayCurve.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,11 +139,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDataWizard.cs">
+    <Compile Include="FormImportWizard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDataWizard.Designer.cs">
-      <DependentUpon>FormDataWizard.cs</DependentUpon>
+    <Compile Include="FormImportWizard.Designer.cs">
+      <DependentUpon>FormImportWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\HalfFloat.cs" />
     <Compile Include="Program.cs" />
@@ -145,8 +151,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDataWizard.resx">
-      <DependentUpon>FormDataWizard.cs</DependentUpon>
+    <EmbeddedResource Include="FormImportWizard.resx">
+      <DependentUpon>FormImportWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDayCurve.resx">
       <DependentUpon>FormDayCurve.cs</DependentUpon>
@@ -184,6 +190,12 @@
     <Compile Include="Record\RecordDevice.cs" />
     <Compile Include="Record\RecordDisk.cs" />
     <Compile Include="Record\RecordFile.cs" />
+    <Compile Include="FormExportWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormExportWizard.Designer.cs">
+      <DependentUpon>FormExportWizard.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Config\Devices.xml">
@@ -192,8 +204,14 @@
     <EmbeddedResource Include="Config\DeviceType.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormRawData.resx">
       <DependentUpon>FormRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormExportWizard.resx">
+      <DependentUpon>FormExportWizard.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="toolbox.ico" />
     <Content Include="USB red.ico" />

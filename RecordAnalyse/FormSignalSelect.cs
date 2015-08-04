@@ -107,6 +107,19 @@ namespace RecordAnalyse
             private set;
         }
 
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "数据文件(*.dat)|*.dat";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    comboBox1.Items.Add(ofd.FileName);
+                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+                }
+            }
+        }
+
     
 
        

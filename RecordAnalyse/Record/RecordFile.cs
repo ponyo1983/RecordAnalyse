@@ -4,6 +4,7 @@ using System.Text;
 using RecordAnalyse.Utils;
 using System.Threading;
 using RecordAnalyse.Signal;
+using System.IO;
 
 namespace RecordAnalyse.Record
 {
@@ -20,7 +21,8 @@ namespace RecordAnalyse.Record
 
         public event EventHandler<SignalArgs> SignalArgsChanged;
 
-        public RecordFile(DiskUtil disk, long offset)
+        byte[] dataChannel = new byte[512];
+        public RecordFile(DiskUtil disk, long offset,int index)
         {
             this.disk = disk;
             this.Offset = offset;
@@ -28,27 +30,39 @@ namespace RecordAnalyse.Record
             device = new RecordDevice(disk);
             if (device.IsValid == false) return;
 
-            byte[] data = new byte[512];
+         
 
-            disk.Read(data, 0, 512);
+            disk.Read(dataChannel, 0, 512);
 
-            string tag = ASCIIEncoding.ASCII.GetString(data, 0, 4);
+            string tag = ASCIIEncoding.ASCII.GetString(dataChannel, 0, 4);
 
             if (tag != " chn") return;
 
-            int channelNum = data[4];
+            int channelNum = dataChannel[4];
             eventWaits = new EventWaitHandle[channelNum];
 
             for (int i = 0; i < channelNum; i++)
             {
                 AutoResetEvent autoEvent = new AutoResetEvent(false);
-                SignalChannel info = new SignalChannel(this,autoEvent, data, 5 + 128 * i);
+                SignalChannel info = new SignalChannel(this,autoEvent, dataChannel, 5 + 128 * i);
                 eventWaits[i] = autoEvent;
                 listChannel.Add(info);
             }
 
 
+            this.FileIndex = index+1;
+        }
 
+        public bool Select
+        {
+            get;
+            set;
+        }
+
+        public int FileIndex
+        {
+            get;
+            private set;
         }
 
 
@@ -107,6 +121,27 @@ namespace RecordAnalyse.Record
             get
             {
                 return device.Time;
+            }
+        }
+        public string BeginTimeTxt
+        {
+            get
+            {
+                return this.BeginTime.ToString("yyyy/MM/dd HH:mm:ss");
+            }
+        }
+
+        public string TimeLength
+        {
+            get
+            {
+              int  seconds = (int)((this.EndTime - this.BeginTime).TotalSeconds);
+              
+                int h = seconds / (3600);
+                int m = (seconds - h * (3600)) / 60;
+                int s = seconds - h * (3600) - m * 60;
+
+               return h.ToString("00") + ":" + m.ToString("00") + ":" + s.ToString("00");
             }
         }
 
@@ -176,6 +211,32 @@ namespace RecordAnalyse.Record
 
         }
 
+
+        public void Write(FileStream fs)
+        {
+            device.Write(fs);
+            fs.Write(dataChannel, 0, 512);
+
+
+            //原始数据
+            disk.Position = 512 * 2 + this.Offset;
+
+            byte[] data=new byte[256*512];
+
+            int readSector = 0;
+
+            while (readSector < device.UsedSector-2)
+            {
+                int length = disk.Read(data, 0, data.Length);
+                int sector = length / 512;
+                readSector += sector;
+                fs.Write(data, 0, sector * 512);
+                this.ExportLength = (readSector+2)*512;
+                
+
+            }
+
+        }
 
         /// <summary>
         /// 导出数据

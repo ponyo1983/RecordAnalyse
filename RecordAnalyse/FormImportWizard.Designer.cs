@@ -1,6 +1,6 @@
 ﻿namespace RecordAnalyse
 {
-    partial class FormDataWizard
+    partial class FormImportWizard
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataWizard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormImportWizard));
             this.wizardControl1 = new DevExpress.XtraWizard.WizardControl();
             this.welcomeWizardPage1 = new DevExpress.XtraWizard.WelcomeWizardPage();
             this.wizardPage1 = new DevExpress.XtraWizard.WizardPage();
@@ -86,7 +86,7 @@
             this.welcomeWizardPage1.Name = "welcomeWizardPage1";
             this.welcomeWizardPage1.ProceedText = "若要继续, 点击下一步";
             this.welcomeWizardPage1.Size = new System.Drawing.Size(450, 290);
-            this.welcomeWizardPage1.Text = "欢迎使用数据导出向导";
+            this.welcomeWizardPage1.Text = "欢迎使用数据导入向导";
             this.welcomeWizardPage1.PageCommit += new System.EventHandler(this.welcomeWizardPage1_PageCommit);
             // 
             // wizardPage1
@@ -223,14 +223,14 @@
             this.timer1.Interval = 200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // FormDataWizard
+            // FormImportWizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(667, 423);
             this.Controls.Add(this.wizardControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormDataWizard";
+            this.Name = "FormImportWizard";
             this.Text = "数据导入向导";
             ((System.ComponentModel.ISupportInitialize)(this.wizardControl1)).EndInit();
             this.wizardControl1.ResumeLayout(false);
