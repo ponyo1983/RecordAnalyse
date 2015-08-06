@@ -261,6 +261,12 @@ namespace RecordAnalyse
                 );
             return sb.ToString();
         }
+
+        private void dateEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            chart.Focus();
+            DrawCurve();
+        }
        
     }
 }
