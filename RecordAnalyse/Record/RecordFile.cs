@@ -89,7 +89,7 @@ namespace RecordAnalyse.Record
 
                 if (device.IsValid)
                 {
-                    return (device.UsedSector) * 512;
+                    return (device.UsedSector) * 512L;
                 }
                 return 0;
             }
