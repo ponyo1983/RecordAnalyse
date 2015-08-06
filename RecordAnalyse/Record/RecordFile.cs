@@ -182,16 +182,16 @@ namespace RecordAnalyse.Record
 
             if (channelNum <= 0) return null;
 
-           int startSec =(int)((timeBegin - this.BeginTime).TotalSeconds);
+           long startSec =(long)((timeBegin - this.BeginTime).TotalSeconds);
 
             int sampleRate = listChannel[0].SampleRate;
             int bytesPerSec = channelNum * sampleRate;
-            int secTotal = (int)((this.Length - 512 * 2) * 1f / (channelNum * sampleRate)); //去掉最后一秒的数据
+            long secTotal = (long)((this.Length - 512 * 2) * 1f / (channelNum * sampleRate)); //去掉最后一秒的数据
             if (startSec + secLen > secTotal) return null;
 
-            int startRd = (int)(this.Offset + 512 * 2 + startSec * sampleRate * channelNum-511)/512*512;
-            int rdOffset = (int)(this.Offset + 512 * 2 + startSec * sampleRate * channelNum - startRd);
-            int endRd = (int)(this.Offset + 512 * 2+sampleRate*(startSec +secLen) * channelNum + 511) / 512 * 512;
+            long startRd = (this.Offset + 512 * 2 + startSec * sampleRate * channelNum-511)/512L*512;
+            long rdOffset = (this.Offset + 512 * 2 + startSec * sampleRate * channelNum - startRd);
+            long endRd = (this.Offset + 512 * 2+sampleRate*(startSec +secLen) * channelNum + 511) / 512L * 512;
             disk.Position = startRd;
 
           

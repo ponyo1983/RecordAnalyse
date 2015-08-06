@@ -115,6 +115,12 @@ namespace RecordAnalyse
                 return;
             }
 
+
+            int sec = (int)((timeQuery - selChannel.File.BeginTime).TotalSeconds);
+            trackBarControl1.ValueChanged -= new EventHandler(trackBarControl1_ValueChanged);
+            trackBarControl1.Value = sec;
+            trackBarControl1.ValueChanged += new EventHandler(trackBarControl1_ValueChanged);
+
             float[] data = selChannel.File.GetData(selChannel.Channel - 1, timeQuery, secNum);
 
             dayCurveGroup.ClearChartObject();
@@ -232,6 +238,12 @@ namespace RecordAnalyse
                     timeEdit1.Time = timeSel;
                 }
             }
+            timeSet = timeSel.AddSeconds((timeEdit1.Time - timeEdit1.Time.Date).TotalSeconds);
+            int sec = (int)((timeSet - selChannel.File.BeginTime).TotalSeconds);
+            trackBarControl1.ValueChanged-=new EventHandler(trackBarControl1_ValueChanged);
+            trackBarControl1.Value = sec;
+            trackBarControl1.ValueChanged+=new EventHandler(trackBarControl1_ValueChanged);
+
         }
 
         private void trackBarControl1_ValueChanged(object sender, EventArgs e)
