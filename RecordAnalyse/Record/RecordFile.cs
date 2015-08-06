@@ -231,7 +231,7 @@ namespace RecordAnalyse.Record
                 int sector = length / 512;
                 readSector += sector;
                 fs.Write(data, 0, sector * 512);
-                this.ExportLength = (readSector+2)*512;
+                this.ExportLength = (readSector+2)*512L;
                 
 
             }
@@ -256,7 +256,7 @@ namespace RecordAnalyse.Record
             int sampleRate = listChannel[0].SampleRate;
             int bytesPerSec = listChannel[0].SampleRate*channelNum;
 
-            int readOffset = 512 * 2;
+            long readOffset = 512 * 2;
             long recordSize = this.Length -   bytesPerSec; //去掉最后一秒的数据
 
             byte[] adData = new byte[sampleRate];
