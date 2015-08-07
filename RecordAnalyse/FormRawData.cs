@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using RecordAnalyse.GUI;
 using UltraChart;
 using RecordAnalyse.DSP;
+using RecordAnalyse.Record;
 
 namespace RecordAnalyse
 {
@@ -71,7 +72,10 @@ namespace RecordAnalyse
                    textEdit1.Text = selChannel.ToString();
                    trackBarControl1.Properties.Maximum = selChannel.RecordSec;
 
-                   int days = selChannel.RecordSec / (3600 * 24)+1;
+                   int days = (int)((selChannel.File.EndTime.Date-selChannel.File.BeginTime.Date).TotalDays)+1;
+
+                   
+
 
                    comboBoxEdit1.Properties.Items.Clear();
                    listTimes.Clear();
