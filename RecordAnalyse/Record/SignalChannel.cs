@@ -480,7 +480,7 @@ namespace RecordAnalyse.Record
                     int ignoreLow = 5;
                     util.FindComplexPeaks(data2, ignoreLow, this.SampleRate / 2, peakVal, peakIndexLeft); //忽略直流信息
 
-
+                   // int freqCenter=  util.CalFreqCenter(dataSpectrum, 400);
 
 
                     if (peakIndexLeft[0] < 0)
@@ -534,7 +534,36 @@ namespace RecordAnalyse.Record
 
                         if (matchYP)
                         {
-                            freqShift = (peakIndexLeft[0] + peakIndexLeft[1] + 2 * ignoreLow) / 2f;
+                            float tmpShiftDiff = float.MaxValue;
+
+                            for (int i = 0; i < peakIndexLeft.Length - 2; i++)
+                            {
+                                for (int j = i + 1; j < peakIndexLeft.Length - 1; j++)
+                                {
+                                    float tmpShift = (peakIndexLeft[i] + peakIndexLeft[j] + 2 * ignoreLow) / 2f;
+                                    if (Math.Abs(tmpShift - 550) < tmpShiftDiff)
+                                    {
+                                        freqShift = tmpShift;
+                                        tmpShiftDiff = Math.Abs(tmpShift - 550);
+                                    }
+                                    if (Math.Abs(tmpShift - 650) < tmpShiftDiff)
+                                    {
+                                        freqShift = tmpShift;
+                                        tmpShiftDiff = Math.Abs(tmpShift - 650);
+                                    }
+                                    if (Math.Abs(tmpShift - 750) < tmpShiftDiff)
+                                    {
+                                        freqShift = tmpShift;
+                                        tmpShiftDiff = Math.Abs(tmpShift - 750);
+                                    }
+                                    if (Math.Abs(tmpShift - 850) < tmpShiftDiff)
+                                    {
+                                        freqShift = tmpShift;
+                                        tmpShiftDiff = Math.Abs(tmpShift - 850);
+                                    }
+                                    
+                                }
+                            }
                             underSampleCount = 30;
                         }
                         if (matchUM71)

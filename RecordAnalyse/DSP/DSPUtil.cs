@@ -353,6 +353,19 @@ namespace RecordAnalyse.DSP
             result[1] = (float)Math.Sqrt(sum / cnt);
         }
 
+        public int CalFreqCenter(float[] ampl, int startIndex)
+        {
+            double sumAmpl = 0;
+            double sumAmplX = 0;
+            for (int i = startIndex; i < 1000; i++)
+            {
+                sumAmplX += i * ampl[i];
+                sumAmpl += ampl[i];
+            }
+
+                return (int)(sumAmplX/sumAmpl);
+        }
+
 
     }
 }
