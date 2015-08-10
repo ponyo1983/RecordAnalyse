@@ -614,28 +614,30 @@ namespace RecordAnalyse.Record
 
                             float diffrate = float.MaxValue;
 
-                            for (int i = 0; i < 3; i++)
-                            {
-                                for (int j = 0; j < 3; j++)
-                                {
-                                    float indexLeft = peakIndexLeft[i];
-                                    float indexRight = signalLength / 2 - peakIndexRight[j];
+                            //for (int i = 0; i < 3; i++)
+                            //{
+                            //    for (int j = 0; j < 3; j++)
+                            //    {
+                            //        float indexLeft = peakIndexLeft[i];
+                            //        float indexRight = peakIndexRight[j] - signalLength / 2;
 
-                                    float tmpCarrier = freqShift + (indexRight - indexLeft + 2) / 2f / underSampleCount;
+                            //        float tmpCarrier = freqShift + (indexRight + indexLeft + 2) / 2f / underSampleCount;
 
-                                    for (int k = 0; k < carrierList.Length; k++)
-                                    {
-                                        float rate = Math.Abs(tmpCarrier - carrierList[k]) / carrierList[k];
-                                        if (rate < diffrate)
-                                        {
-                                            diffrate = rate;
-                                            carrierFreq = tmpCarrier;
-                                        }
-                                    }
+                            //        for (int k = 0; k < carrierList.Length; k++)
+                            //        {
+                            //            float rate = Math.Abs(tmpCarrier - carrierList[k]) / carrierList[k];
+                            //            if (rate < diffrate)
+                            //            {
+                            //                diffrate = rate;
+                            //                carrierFreq = tmpCarrier;
+                            //            }
+                            //        }
 
 
-                                }
-                            }
+                            //    }
+                            //}
+
+                            carrierFreq = freqShift;
 
                         }
                         if (matchUM71)
