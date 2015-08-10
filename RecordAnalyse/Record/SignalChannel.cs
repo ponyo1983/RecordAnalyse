@@ -477,7 +477,8 @@ namespace RecordAnalyse.Record
 
                     dcAmpl = CalRealVal(dcacAmpl[0], 0);
                     acAmpl = CalRealVal(dcacAmpl[1], 0);
-                    int ignoreLow = 5;
+                    int ignoreLow =DecodeFM?200: 5;
+                   
                     util.FindComplexPeaks(data2, ignoreLow, this.SampleRate / 2, peakVal, peakIndexLeft); //忽略直流信息
 
                    // int freqCenter=  util.CalFreqCenter(dataSpectrum, 400);
