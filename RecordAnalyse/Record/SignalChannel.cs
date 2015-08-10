@@ -312,9 +312,12 @@ namespace RecordAnalyse.Record
             float[] fftData = null;
             float[] dataSpectrum = null;
 
-            float[] peakVal = new float[5];
-            int[] peakIndexLeft = new int[5];
-            int[] peakIndexRight = new int[5];
+            int PeakNum = 6;
+            float[] ypDiff = new float[PeakNum - 1];
+            float[] peakVal = new float[PeakNum];
+            int[] peakIndexLeft = new int[PeakNum];
+            int[] peakIndexLeftTmp = new int[PeakNum];
+            int[] peakIndexRight = new int[PeakNum];
             float[] dcacAmpl = new float[2];
 
             float[] amplDenseAC = new float[25];
@@ -477,9 +480,9 @@ namespace RecordAnalyse.Record
 
                     dcAmpl = CalRealVal(dcacAmpl[0], 0);
                     acAmpl = CalRealVal(dcacAmpl[1], 0);
-                    int ignoreLow =DecodeFM?200: 5;
-                   
-                    util.FindComplexPeaks(data2, ignoreLow, this.SampleRate / 2, peakVal, peakIndexLeft); //忽略直流信息
+                    int ignoreLow =DecodeFM?400: 5;
+                    int ignoreHigh = DecodeFM ? 3000 : this.SampleRate / 2;
+                    util.FindComplexPeaks(data2, ignoreLow, ignoreHigh, peakVal, peakIndexLeft); //忽略直流信息
 
                    // int freqCenter=  util.CalFreqCenter(dataSpectrum, 400);
 
@@ -587,25 +590,22 @@ namespace RecordAnalyse.Record
                         {
                             int signalLength = data1.Length / 2;
                             util.FindComplexPeaks(data1, 0, signalLength / 2, peakVal, peakIndexLeft);
-                            lowFreq = -1; //Math.Abs(peakIndex[0] - peakIndex[1]) * 1f / underSampleCount;
 
+                            Array.Copy(peakIndexLeft, peakIndexLeftTmp, peakIndexLeftTmp.Length);
+                            Array.Sort(peakIndexLeftTmp);
 
-                            for (int j = 0; j < peakIndexLeft.Length - 1; j++)
+                            lowFreq = -1;
+
+                            for (int j = 1; j < peakIndexLeftTmp.Length; j++)
                             {
-                                for (int k = j; k < peakIndexLeft.Length - 1; k += 2)
-                                {
-                                    float tmpLow = Math.Abs(peakIndexLeft[k] - peakIndexLeft[k + 1]) * 1f / underSampleCount;
-                                    if (tmpLow > 7 && tmpLow < 28)
-                                    {
-                                        lowFreq = tmpLow;
-                                        break;
-                                    }
-                                }
-                                if (lowFreq > 0) break;
+                                ypDiff[j - 1] = Math.Abs(peakIndexLeftTmp[j] - peakIndexLeftTmp[j - 1]) * 1f / underSampleCount;
                             }
 
+                            Array.Sort(ypDiff);
 
+                            lowFreq = ypDiff[(PeakNum-1) / 2];
 
+                   
                             util.FindComplexPeaks(data1, signalLength / 2, signalLength, peakVal, peakIndexRight);
 
 

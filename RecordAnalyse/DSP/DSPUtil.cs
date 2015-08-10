@@ -66,6 +66,7 @@ namespace RecordAnalyse.DSP
                                 break;
                             }
                         }
+                        
                     }
                     findPeakCnt = 0;
                 }
