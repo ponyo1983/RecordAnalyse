@@ -223,13 +223,8 @@ namespace RecordAnalyse.Record
 
             if (minIndex >= 0)
             {
-                if (freq < 0.1)
-                {
-                    return calList[minIndex].CoeffK * adVal + calList[minIndex].CoeffB;
-                }
+               
                 return calList[minIndex].CoeffK * adVal + calList[minIndex].CoeffB;
-
-
             }
             return adVal;
         }
@@ -568,12 +563,12 @@ namespace RecordAnalyse.Record
                                     
                                 }
                             }
-                            underSampleCount = 30;
+                            underSampleCount = 20;
                         }
                         if (matchUM71)
                         {
                             freqShift = peakIndexLeft[0] + ignoreLow - 40;
-                            underSampleCount = 40;
+                            underSampleCount = 30;
                         }
 
                         util.ShiftSignal(data1, freqShift, this.SampleRate); //频谱搬移
@@ -594,48 +589,24 @@ namespace RecordAnalyse.Record
                             Array.Copy(peakIndexLeft, peakIndexLeftTmp, peakIndexLeftTmp.Length);
                             Array.Sort(peakIndexLeftTmp);
 
-                            lowFreq = -1;
 
-                            for (int j = 1; j < peakIndexLeftTmp.Length; j++)
+                            for (int j = 0; j < peakIndexLeft.Length - 1; j++)
                             {
-                                ypDiff[j - 1] = Math.Abs(peakIndexLeftTmp[j] - peakIndexLeftTmp[j - 1]) * 1f / underSampleCount;
+                                for (int k = j; k < peakIndexLeft.Length - 1; k += 2)
+                                {
+                                    float tmpLow = Math.Abs(peakIndexLeft[k] - peakIndexLeft[k + 1]) * 1f / underSampleCount;
+                                    if (tmpLow > 7 && tmpLow < 28)
+                                    {
+                                        lowFreq = tmpLow;
+                                        break;
+                                    }
+                                }
+                                if (lowFreq > 0) break;
                             }
-
-                            Array.Sort(ypDiff);
-
-                            lowFreq = ypDiff[(PeakNum-1) / 2];
 
                    
                             util.FindComplexPeaks(data1, signalLength / 2, signalLength, peakVal, peakIndexRight);
 
-
-
-                            float[] carrierList = new float[] { 550, 650, 750, 850, };
-
-                            float diffrate = float.MaxValue;
-
-                            //for (int i = 0; i < 3; i++)
-                            //{
-                            //    for (int j = 0; j < 3; j++)
-                            //    {
-                            //        float indexLeft = peakIndexLeft[i];
-                            //        float indexRight = peakIndexRight[j] - signalLength / 2;
-
-                            //        float tmpCarrier = freqShift + (indexRight + indexLeft + 2) / 2f / underSampleCount;
-
-                            //        for (int k = 0; k < carrierList.Length; k++)
-                            //        {
-                            //            float rate = Math.Abs(tmpCarrier - carrierList[k]) / carrierList[k];
-                            //            if (rate < diffrate)
-                            //            {
-                            //                diffrate = rate;
-                            //                carrierFreq = tmpCarrier;
-                            //            }
-                            //        }
-
-
-                            //    }
-                            //}
 
                             carrierFreq = freqShift;
 
