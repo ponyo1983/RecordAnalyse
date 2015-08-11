@@ -627,6 +627,10 @@ namespace RecordAnalyse.Record
                             util.FindComplexPeaks(data1, peakVal, peakIndexLeft);
                             carrierFreq = freqShift + peakIndexLeft[0] * 1f / underSampleCount;
                             lowFreq = Math.Abs(peakIndexLeft[1] - peakIndexLeft[2]) / 2f / underSampleCount;
+                            if (lowFreq < 9 || lowFreq > 31)
+                            {
+                                lowFreq = -1;
+                            }
                         }
 
                     }
