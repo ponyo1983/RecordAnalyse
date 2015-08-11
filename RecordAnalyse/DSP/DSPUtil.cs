@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace RecordAnalyse.DSP
 {
@@ -211,7 +212,7 @@ namespace RecordAnalyse.DSP
         public void FindComplexPeaks(float[] signal, int from, int to, float[] peaks, int[] index)
         {
 
-
+            bool store = false;
             float[] ampl = new float[to];
             for (int i = 0; i < from; i++)
             {
@@ -221,6 +222,7 @@ namespace RecordAnalyse.DSP
             {
                 ampl[i] = signal[2 * i] * signal[2 * i] + signal[2 * i + 1] * signal[2 * i + 1];
             }
+     
             FindPeaks(ampl, peaks, index);
 
         }
@@ -297,7 +299,7 @@ namespace RecordAnalyse.DSP
         {
             int length = signal.Length / 2;
             int cnt = length / sampleRate;
-            for (int i = 1; i < cnt; i++)
+            for (int i = 0; i < cnt; i++)
             {
                 signal[i * 2] = signal[i * 2 * sampleRate];
                 signal[i * 2 + 1] = signal[i * 2 * sampleRate + 1];

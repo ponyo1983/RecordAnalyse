@@ -327,6 +327,7 @@ namespace RecordAnalyse.Record
             int diffCnt = 0;
             float carrierFreq = 0;
             float lowFreq = 0;
+            float standard = 0;
             SignalArgs args;
 
             List<float> curveList = new List<float>();
@@ -516,6 +517,7 @@ namespace RecordAnalyse.Record
                         bool matchUM71 = true;
                         float freqShift = 0;
                         int underSampleCount = 1;
+                        
                         for (int i = 0; i < peakIndexLeft.Length; i++)
                         {
                             if ((peakIndexLeft[i]  < 1600 - 200) || (peakIndexLeft[i]  > 2600 + 200))
@@ -567,14 +569,14 @@ namespace RecordAnalyse.Record
                             }
 
                             util.FindComplexPeaks(data2, (int)freqShift, ignoreHigh, peakVal, peakIndexLeft);
-                            lowFreq = Math.Abs(peakIndexLeft[0] - peakIndexLeft[1]);
-                            underSampleCount = 20;
+                            standard = Math.Abs(peakIndexLeft[0] - peakIndexLeft[1]);
+                            underSampleCount = 30;
 
                         }
                         if (matchUM71)
                         {
                             freqShift = peakIndexLeft[0]  - 40;
-                            underSampleCount = 30;
+                            underSampleCount = 40;
                         }
 
                         util.ShiftSignal(data1, freqShift, this.SampleRate); //频谱搬移
@@ -591,17 +593,16 @@ namespace RecordAnalyse.Record
                         {
                             int signalLength = data1.Length / 2;
                             util.FindComplexPeaks(data1, 0, signalLength / 2, peakVal, peakIndexLeft);
-
-                            Array.Copy(peakIndexLeft, peakIndexLeftTmp, peakIndexLeftTmp.Length);
-                            Array.Sort(peakIndexLeftTmp);
+          
 
                             float diffMinYp = 1.5f; //最大不能差1.5
-                            float standard = lowFreq;
+
+                            lowFreq = -1;
                             for (int j = 0; j < peakIndexLeft.Length - 1; j++)
                             {
-                                for (int k = j; k < peakIndexLeft.Length - 1; k += 2)
+                                for (int k = j+1; k < peakIndexLeft.Length; k++)
                                 {
-                                    float tmpLow = Math.Abs(peakIndexLeft[k] - peakIndexLeft[k + 1]) * 1f / underSampleCount;
+                                    float tmpLow = Math.Abs(peakIndexLeft[k] - peakIndexLeft[j]) * 1f / underSampleCount;
                                     if (tmpLow > 8 && tmpLow < 28)
                                     {
                                         if (Math.Abs(tmpLow - standard) < diffMinYp)
@@ -611,7 +612,7 @@ namespace RecordAnalyse.Record
                                         }
                                     }
                                 }
-                              // if (lowFreq > 0) break;
+                               if (lowFreq > 0) break;
                             }
 
                    
