@@ -68,6 +68,18 @@
     <Compile Include="Device\DeviceProperty.cs" />
     <Compile Include="Device\DeviceType.cs" />
     <Compile Include="Device\SourceGroup.cs" />
+    <Compile Include="HHFormat\Analog\AnalogManager.cs" />
+    <Compile Include="HHFormat\Analog\DevAnalog.cs" />
+    <Compile Include="HHFormat\Analog\DevAnalogGrp.cs" />
+    <Compile Include="HHFormat\Curve\DevCurve.cs" />
+    <Compile Include="HHFormat\Device\HHDevice.cs" />
+    <Compile Include="HHFormat\Device\HHDeviceGrp.cs" />
+    <Compile Include="HHFormat\Property\HHAnalogProperty.cs" />
+    <Compile Include="HHFormat\Property\HHDeviceProperty.cs" />
+    <Compile Include="HHFormat\HHDeviceManager.cs" />
+    <Compile Include="HHFormat\Property\HHDigitProperty.cs" />
+    <Compile Include="HHFormat\Property\HHStringProperty.cs" />
+    <Compile Include="IniDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -87,12 +99,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{CB9A14B8-2684-4682-9D57-6FE02344225F}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HHFormat\Digit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
