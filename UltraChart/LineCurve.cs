@@ -131,12 +131,12 @@ namespace UltraChart
                 }
                 else
                 {
-                    //if (maxVal - minVal < 1)
-                    //{
-                    //    yAxes.YAxesMax = maxVal+10;
-                    //    yAxes.YAxesMin = minVal-10;
-                    //}
-                    //else
+                    if (maxVal - minVal < 1)
+                    {
+                        yAxes.YAxesMax = maxVal + 5;
+                        yAxes.YAxesMin = minVal - 5;
+                    }
+                    else
                     {
                         yAxes.YAxesMax = (maxVal+minVal)/2 + (maxVal-minVal)*0.7f;
                         yAxes.YAxesMin = (maxVal + minVal) / 2 - (maxVal - minVal) * 0.7f;
