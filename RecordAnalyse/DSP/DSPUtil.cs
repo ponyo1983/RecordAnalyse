@@ -212,11 +212,14 @@ namespace RecordAnalyse.DSP
         {
 
 
-            float[] ampl = new float[to - from];
+            float[] ampl = new float[to];
+            for (int i = 0; i < from; i++)
+            {
+                ampl[i] = 0;
+            }
             for (int i = from; i < to; i++)
             {
-                ampl[i - from] = signal[2 * i] * signal[2 * i] + signal[2 * i + 1] * signal[2 * i + 1];
-
+                ampl[i] = signal[2 * i] * signal[2 * i] + signal[2 * i + 1] * signal[2 * i + 1];
             }
             FindPeaks(ampl, peaks, index);
 

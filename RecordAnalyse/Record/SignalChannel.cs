@@ -335,6 +335,8 @@ namespace RecordAnalyse.Record
 
 
 
+            float[] ypList = new float[] { 8.5f, 9.0f, 9.5f, 11.0f, 12.5f, 13.5f, 15.0f, 16.5f, 17.5f, 18.5f, 20.0f, 21.5f, 22.5f, 23.5f, 24.5f, 26.0f };
+
             Queue<float> queueACCurve = new Queue<float>();
 
             int maxCurveCnt = 0;
@@ -491,7 +493,7 @@ namespace RecordAnalyse.Record
                     }
 
 
-                    float freq = peakIndexLeft[0] + ignoreLow;
+                    float freq = peakIndexLeft[0];
                     acAmpl = CalAmplByFreq(fftData, (int)freq);
                     acAmpl = CalRealVal(acAmpl, freq);
                     if (DecodeFM == false)
@@ -516,18 +518,18 @@ namespace RecordAnalyse.Record
                         int underSampleCount = 1;
                         for (int i = 0; i < peakIndexLeft.Length; i++)
                         {
-                            if ((peakIndexLeft[i] + ignoreLow < 1600 - 200) || (peakIndexLeft[i] + ignoreLow > 2600 + 200))
+                            if ((peakIndexLeft[i]  < 1600 - 200) || (peakIndexLeft[i]  > 2600 + 200))
                             {
                                 matchUM71 = false;
                             }
-                            if ((peakIndexLeft[i] + ignoreLow < 550 - 100) || (peakIndexLeft[i] + ignoreLow > 850 + 100))
+                            if ((peakIndexLeft[i]  < 550 - 100) || (peakIndexLeft[i]  > 850 + 100))
                             {
                                 matchYP = false;
                             }
                         }
                         if ((matchYP == false) && (matchUM71 == false))
                         {
-                            carrierFreq = 0;
+                            carrierFreq = peakIndexLeft[0];
                             lowFreq = 0;
                         }
 
@@ -539,7 +541,7 @@ namespace RecordAnalyse.Record
                             {
                                 for (int j = i + 1; j < peakIndexLeft.Length - 1; j++)
                                 {
-                                    float tmpShift = (peakIndexLeft[i] + peakIndexLeft[j] + 2 * ignoreLow) / 2f;
+                                    float tmpShift = (peakIndexLeft[i] + peakIndexLeft[j] ) / 2f;
                                     if (Math.Abs(tmpShift - 550) < tmpShiftDiff)
                                     {
                                         freqShift = tmpShift;
@@ -563,11 +565,15 @@ namespace RecordAnalyse.Record
                                     
                                 }
                             }
+
+                            util.FindComplexPeaks(data2, (int)freqShift, ignoreHigh, peakVal, peakIndexLeft);
+                            lowFreq = Math.Abs(peakIndexLeft[0] - peakIndexLeft[1]);
                             underSampleCount = 20;
+
                         }
                         if (matchUM71)
                         {
-                            freqShift = peakIndexLeft[0] + ignoreLow - 40;
+                            freqShift = peakIndexLeft[0]  - 40;
                             underSampleCount = 30;
                         }
 
@@ -589,19 +595,23 @@ namespace RecordAnalyse.Record
                             Array.Copy(peakIndexLeft, peakIndexLeftTmp, peakIndexLeftTmp.Length);
                             Array.Sort(peakIndexLeftTmp);
 
-
+                            float diffMinYp = 1.5f; //最大不能差1.5
+                            float standard = lowFreq;
                             for (int j = 0; j < peakIndexLeft.Length - 1; j++)
                             {
                                 for (int k = j; k < peakIndexLeft.Length - 1; k += 2)
                                 {
                                     float tmpLow = Math.Abs(peakIndexLeft[k] - peakIndexLeft[k + 1]) * 1f / underSampleCount;
-                                    if (tmpLow > 7 && tmpLow < 28)
+                                    if (tmpLow > 8 && tmpLow < 28)
                                     {
-                                        lowFreq = tmpLow;
-                                        break;
+                                        if (Math.Abs(tmpLow - standard) < diffMinYp)
+                                        {
+                                            lowFreq = tmpLow;
+                                            diffMinYp = Math.Abs(tmpLow - standard);
+                                        }
                                     }
                                 }
-                                if (lowFreq > 0) break;
+                              // if (lowFreq > 0) break;
                             }
 
                    
@@ -622,6 +632,7 @@ namespace RecordAnalyse.Record
 
                     acAmpl = CalAmplByFreq(fftData, (int)carrierFreq);
                     acAmpl = CalRealVal(acAmpl, carrierFreq);
+                 
                     if (Math.Abs(carrierFreq - prevCarrier) > 10 || Math.Abs(lowFreq - prevLow) > 1)
                     {
                         diffCnt++;
