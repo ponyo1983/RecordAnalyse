@@ -101,12 +101,12 @@ namespace DataStorage
     
 
 
-        private void AddCurve(CurveGroup sf)
+        public void AddCurve(CurveGroup cg)
         {
 
             CurveManager manager = CurveManager.GetInstance();
 
-            manager.AddCurve(sf);
+            manager.AddCurve(cg);
 
         }
 
@@ -126,6 +126,7 @@ namespace DataStorage
 
             CurveManager.GetInstance().AddCurve(grp);
         }
+
 
        
         public  bool Exit()

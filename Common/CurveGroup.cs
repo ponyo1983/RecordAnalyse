@@ -18,6 +18,21 @@ namespace Common
             listCurve.Add(curve);
         }
 
+        public CurveGroup(int phaseNum, int type, int index)
+        {
+            this.Type = type;
+            this.Index = index;
+            for (int i = 0; i < phaseNum; i++)
+            {
+                listCurve.Add(null);
+            }
+        }
+
+        public void AddCurve(int phase, DateTime time, int sampleRate, float[] data)
+        {
+            listCurve[phase] = new StationCurve(time, sampleRate, data);
+        }
+
 
         public int Type
         {

@@ -14,6 +14,7 @@ using System.Threading;
 using ConfigManager.HHDevice;
 using ConfigManager.HHFormat.Device;
 using ConfigManager.HHFormat.Analog;
+using ConfigManager.HHFormat.Curve;
 
 namespace RecordAnalyse
 {
@@ -290,7 +291,8 @@ namespace RecordAnalyse
 
                        
                         sigChannel.DecodeFM=selectDevice.DevGroup.SourceGroups[srcIndex].AllowFM;
-                        sigChannel.DecodeCurve = selectDevice.DevGroup.SourceGroups[srcIndex].AllowCurve;
+                        bool allowCurve=selectDevice.DevGroup.SourceGroups[srcIndex].AllowCurve;
+                        sigChannel.DecodeCurve = allowCurve;
                         bool allowAngle = selectDevice.DevGroup.SourceGroups[srcIndex].AllowAngle;
                         sigChannel.DecodeAngle = allowAngle;
                         if (allowAngle && selectChannels[i + 1] != null) //参考相位
@@ -299,6 +301,23 @@ namespace RecordAnalyse
                             sigChannel1.DecodeAngle = true;
                             sigChannel1.IsReference = true;
                             selectChannels[i + 1].File.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
+                        }
+                        else if (allowCurve && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
+                        {
+                           HHDeviceProperty devBindProp= selectDevice.GetProperty(selectDevice.DevGroup.SourceGroups[srcIndex].Properties[0]);
+                            DevCurve devCurve= devBindProp.Curves[0];
+                            curveGrp = new Common.CurveGroup(3, devCurve.Group.Type, devCurve.Index);
+
+                            sigChannel.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedA);
+                            if (selectChannels[i + 1] != null)
+                            {
+                                selectChannels[i + 1].File.Channels[selectChannels[i + 1].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedB); //B相
+                            }
+                            if (selectChannels[i + 2] != null)
+                            {
+                                selectChannels[i + 2].File.Channels[selectChannels[i + 2].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedC); //C相
+                            }
+                           
                         }
                         else
                         {
@@ -311,6 +330,23 @@ namespace RecordAnalyse
                             SignalChannel sigChannel1 = selectChannels[i + 1].File.Channels[selectChannels[i + 1].Channel - 1];
                             sigChannel1.DecodeAngle = true;
                             sigChannel1.SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
+                        }
+                        else if (allowCurve && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
+                        {
+                            HHDeviceProperty devBindProp = selectDevice.GetProperty(selectDevice.DevGroup.SourceGroups[srcIndex].Properties[0]);
+                            DevCurve devCurve = devBindProp.Curves[0];
+                          
+
+                            sigChannel.SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedA);
+                            if (selectChannels[i + 1] != null)
+                            {
+                                selectChannels[i + 1].File.Channels[selectChannels[i + 1].Channel - 1].SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedB); //B相
+                            }
+                            if (selectChannels[i + 2] != null)
+                            {
+                                selectChannels[i + 2].File.Channels[selectChannels[i + 2].Channel - 1].SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedC); //C相
+                            }
+
                         }
                         else
                         {
@@ -328,6 +364,59 @@ namespace RecordAnalyse
             catch (Exception)
             {
  
+            }
+        }
+
+
+        Common.CurveGroup curveGrp = null;
+
+        System.Threading.Timer theadTimer=null;
+
+
+
+
+        void timer_tick(object obj)
+        {
+            if (curveGrp != null)
+            {
+                DataStorage.DatabaseModule.GetInstance().AddCurve(curveGrp);
+            }
+            theadTimer.Dispose();
+            theadTimer = null;
+        }
+
+        void FormDataWizard_SignalArgsChangedA(object sender, RecordAnalyse.Signal.SignalArgs e)
+        {
+            if (curveGrp != null)
+            {
+                curveGrp.AddCurve(0, e.Time, 25, e.ACCurve);
+            }
+            if (theadTimer == null)
+            {
+                theadTimer = new System.Threading.Timer(new TimerCallback(timer_tick), null, 5000, System.Threading.Timeout.Infinite);
+            }
+          
+        }
+        void FormDataWizard_SignalArgsChangedB(object sender, RecordAnalyse.Signal.SignalArgs e)
+        {
+            if (curveGrp != null)
+            {
+                curveGrp.AddCurve(1, e.Time, 25, e.ACCurve);
+            }
+            if (theadTimer == null)
+            {
+                theadTimer = new System.Threading.Timer(new TimerCallback(timer_tick), null, 5000, System.Threading.Timeout.Infinite);
+            }
+        }
+        void FormDataWizard_SignalArgsChangedC(object sender, RecordAnalyse.Signal.SignalArgs e)
+        {
+            if (curveGrp != null)
+            {
+                curveGrp.AddCurve(2, e.Time, 25, e.ACCurve);
+            }
+            if (theadTimer == null)
+            {
+                theadTimer = new System.Threading.Timer(new TimerCallback(timer_tick), null, 5000, System.Threading.Timeout.Infinite);
             }
         }
 
