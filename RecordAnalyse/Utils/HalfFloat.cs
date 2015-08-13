@@ -9,10 +9,12 @@ namespace RecordAnalyse.Utils
 
         public static int Halfp2Singles( float[] target,  UInt16[] source, int numel)
         {
+            
             UInt16[] hp = source; // Type pun input as an unsigned 16-bit int
             UInt32[] xp = new UInt32[numel];// target; // Type pun output as an unsigned 32-bit int
             for (int i = 0; i < numel; i++)
             {
+                target[i] = 0;
                 xp[i] = BitConverter.ToUInt32(BitConverter.GetBytes(target[i]),0);
             }
             
