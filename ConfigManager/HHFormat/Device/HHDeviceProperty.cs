@@ -13,11 +13,15 @@ namespace ConfigManager.HHFormat.Device
 
 
 
+
+
+
         private HHDeviceProperty() { }
 
-        public HHDeviceProperty(IniDocument ini, string devName, int index)
+        public HHDeviceProperty(IniDocument ini, HHDeviceGrp grp, int index)
         {
-            string sectionName = devName + "\\属性" + (index + 1);
+            this.DevGrp = grp;
+            string sectionName = grp.Name + "\\属性" + (index + 1);
             this.Type = ini.GetString(sectionName, "类型");
             if (string.IsNullOrEmpty(Type)) return;
             this.DisplayName = ini.GetString(sectionName, "显示名称");
@@ -64,6 +68,13 @@ namespace ConfigManager.HHFormat.Device
 
 
             this.IsValid = true;
+        }
+
+
+        public HHDeviceGrp DevGrp
+        {
+            get;
+            private set;
         }
 
 
@@ -142,6 +153,7 @@ namespace ConfigManager.HHFormat.Device
             prop.Type = this.Type;
             prop.GroupIndex = this.GroupIndex;
             prop.GroupCount = this.GroupCount;
+          
             if (string.IsNullOrEmpty(bindName) == false)
             {
                 switch (this.Type)
@@ -173,6 +185,11 @@ namespace ConfigManager.HHFormat.Device
         {
             get;
             private set;
+        }
+
+        public override string ToString()
+        {
+            return this.DisplayName;
         }
 
 

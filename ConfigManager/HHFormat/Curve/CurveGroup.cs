@@ -16,7 +16,7 @@ namespace ConfigManager.HHFormat.Curve
        
             this.Type = docIni.GetInt(this.Name, "类型", 0);
             if (this.Type <= 0) return;
-   
+            this.TimeInterval = docIni.GetInt(this.Name, "时间间隔", 0);
    
             int curveNum = docIni.GetInt(this.Name, "数目", 0);
             for (int i = 0; i < curveNum; i++)
@@ -54,6 +54,12 @@ namespace ConfigManager.HHFormat.Curve
         }
 
         public int Type
+        {
+            get;
+            private set;
+        }
+
+        public int TimeInterval
         {
             get;
             private set;

@@ -182,6 +182,8 @@
             this.comboBoxEdit3.Name = "comboBoxEdit3";
             this.comboBoxEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.comboBoxEdit3.Properties.DisplayFormat.FormatString = "yyyy/MM/dd HH:mm:ss";
+            this.comboBoxEdit3.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.comboBoxEdit3.Size = new System.Drawing.Size(154, 21);
             this.comboBoxEdit3.TabIndex = 14;
             this.comboBoxEdit3.SelectedIndexChanged += new System.EventHandler(this.comboBoxEdit3_SelectedIndexChanged);

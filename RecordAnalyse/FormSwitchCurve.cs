@@ -8,17 +8,21 @@ using System.Windows.Forms;
 using ConfigManager.Device;
 using UltraChart;
 using Common;
+using ConfigManager.HHDevice;
+using ConfigManager.HHFormat.Device;
+using ConfigManager.HHFormat.Curve;
 
 namespace RecordAnalyse
 {
     public partial class FormSwitchCurve : Form
     {
         static readonly Color[] ColorList = new Color[] { Color.Red, Color.Lime, Color.Yellow };
-        List<DeviceType> listTypes = new List<DeviceType>();
-        List<DateTime> listTime = new List<DateTime>();
-        Device selectDev;
+    
 
-      
+
+        HHDevice selectDev;
+
+
         public FormSwitchCurve()
         {
             InitializeComponent();
@@ -33,17 +37,16 @@ namespace RecordAnalyse
             grp.XAxes.XAxesMode = XAxesMode.Relative;
             grp.DrawPointFlagXAxesScale = 200000;
 
-            IList<DeviceType> types = DeviceTypeManager.GetInstance().DeviceTypes;
+  
+            IList<HHDeviceGrp> devGrps = HHDeviceManager.GetInstance().DeviceGroupsUnsort;
 
-
-            foreach (DeviceType type in types)
+            foreach (HHDeviceGrp type in devGrps)
             {
-                if (type.DCProperties.Count > 0)
+                for (int i = 0; i < type.CurveProperties.Count; i++)
                 {
-                    comboBoxEdit1.Properties.Items.Add(type.Name);
-                    listTypes.Add(type);
-
+                    comboBoxEdit1.Properties.Items.Add(type.CurveProperties[i]);
                 }
+
             }
             if (comboBoxEdit1.Properties.Items.Count > 0)
             {
@@ -51,16 +54,82 @@ namespace RecordAnalyse
             }
         }
 
+
+        private void DrawCurve()
+        {
+            HHDevice device = comboBoxEdit2.SelectedItem as HHDevice;
+
+            HHDeviceProperty devProp = comboBoxEdit1.SelectedItem as HHDeviceProperty;
+            DateTime timeSel = DateTime.Now;
+            if (comboBoxEdit3.SelectedIndex >= 0)
+            {
+                timeSel = (DateTime)comboBoxEdit3.SelectedItem;
+            }
+
+
+
+
+            HHDeviceProperty devBindProp = device.GetProperty(devProp);
+
+
+            List<DevCurve> curves = devBindProp.Curves;
+
+            UltraChart.CurveGroup grp = chart.GroupList[0];
+            grp.ClearChartObject();
+
+            LineArea area = new LineArea(chart, "道岔曲线", true);
+            area.IsShowFoldFlag = false;
+            area.IsFold = false;
+            area.YAxes.Precision = 3;
+            area.YAxes.UnitString = "";
+            grp.AddChartObject(area);
+            grp.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(timeSel), 0);
+            chart.AutoSetXScale();
+
+
+            List<StationCurve> listCurve = DataStorage.DatabaseModule.GetInstance().QueryCurveHistory(curves[0].Group.Type, curves[0].Index, timeSel);
+
+
+            string[][] curveNames = new string[][] { 
+            new string[]{"曲线"},
+            new string[]{"曲线1","曲线2"},
+            new string[]{"A相","B相","C相"},
+            };
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                LineCurve line = new LineCurve(chart, curveNames[curves.Count-1][i], 0);
+                line.LineColor = ColorList[i % ColorList.Length];
+                area.AddLine(line);
+                if (listCurve != null && listCurve.Count > 0 && listCurve[i] != null)
+                {
+
+
+                    for (int j = 0; j < listCurve[i].Points.Length; j++)
+                    {
+                        DateTime time = timeSel.AddMilliseconds(curves[i].Group.TimeInterval * j); //40毫秒
+                        LinePoint point = new LinePoint();
+                        point.Value = listCurve[i].Points[j];
+                        point.Time = ChartGraph.DateTime2ChartTime(time);
+                        line.AddPoint(point);
+                    }
+
+                }
+
+            }
+
+            chart.Draw();
+        }
         private void comboBoxEdit1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxEdit1.SelectedIndex >= 0)
             {
 
 
-                DeviceType devType = listTypes[comboBoxEdit1.SelectedIndex];
+                HHDeviceProperty devProp = comboBoxEdit1.SelectedItem as HHDeviceProperty;
 
 
-                List<Device> listDev = DeviceManager.GetInstance().GetDevices(devType.TypeID);
+                IList<HHDevice> listDev = devProp.DevGrp.Devices;
 
                 comboBoxEdit2.Properties.Items.Clear();
 
@@ -68,7 +137,7 @@ namespace RecordAnalyse
                 comboBoxEdit2.Text = "";
                 for (int i = 0; i < listDev.Count; i++)
                 {
-                    comboBoxEdit2.Properties.Items.Add(listDev[i].Name);
+                    comboBoxEdit2.Properties.Items.Add(listDev[i]);
                 }
 
                 if (listDev.Count > 0)
@@ -84,30 +153,33 @@ namespace RecordAnalyse
             if (comboBoxEdit1.SelectedIndex >= 0 && comboBoxEdit2.SelectedIndex >= 0)
             {
 
-                DeviceType devType = listTypes[comboBoxEdit1.SelectedIndex];
+                HHDeviceProperty prop = comboBoxEdit1.SelectedItem as HHDeviceProperty;
+
+                HHDevice dev = comboBoxEdit2.SelectedItem as HHDevice;
+
+                selectDev = dev;
 
 
-                List<Device> listDev = DeviceManager.GetInstance().GetDevices(devType.TypeID);
-
-                selectDev = listDev[comboBoxEdit2.SelectedIndex];
+                int curveIndex = 0;
 
 
-                int curveIndex = devType.DCProperties[0].PropertyIndex + selectDev.Index * 20;
-
-
-                 listTime = DataStorage.DatabaseModule.GetInstance().QueryCurveTimeList(devType.TypeID, curveIndex);
+               List<DateTime>  listTime = DataStorage.DatabaseModule.GetInstance().QueryCurveTimeList(0, curveIndex);
 
               
                 comboBoxEdit3.Properties.Items.Clear();
                 comboBoxEdit3.Text = "";
                 for (int i = 0; i < listTime.Count; i++)
                 {
-                    comboBoxEdit3.Properties.Items.Add(listTime[i].ToString("yyyy/MM/dd HH:mm:ss"));
+                    comboBoxEdit3.Properties.Items.Add(listTime[i]);
                 }
 
-                if (listTime.Count > 0)
+                if (comboBoxEdit3.Properties.Items.Count > 0)
                 {
                     comboBoxEdit3.SelectedIndex = 0;
+                }
+                else
+                {
+                    DrawCurve();
                 }
 
             }
@@ -116,64 +188,15 @@ namespace RecordAnalyse
 
         private void comboBoxEdit3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxEdit1.SelectedIndex >= 0 && comboBoxEdit2.SelectedIndex >= 0 && comboBoxEdit3.SelectedIndex >= 0)
-            {
-                DeviceType devType = listTypes[comboBoxEdit1.SelectedIndex];
+            if (comboBoxEdit1.SelectedIndex < 0) return;
+            if (comboBoxEdit2.SelectedIndex < 0) return;
+            if (comboBoxEdit3.SelectedIndex < 0) return;
 
-                DateTime timeSel = listTime[comboBoxEdit3.SelectedIndex];
-
-                List<Device> listDev = DeviceManager.GetInstance().GetDevices(devType.TypeID);
-                selectDev = listDev[comboBoxEdit2.SelectedIndex];
-
-                List<DeviceProperty> dcProperties = devType.DCProperties;
-
-                UltraChart.CurveGroup grp = chart.GroupList[0];
-                grp.ClearChartObject();
-
-               LineArea area = new LineArea(chart, "道岔曲线", true);
-                area.IsShowFoldFlag = false;
-                area.IsFold = false;
-                area.YAxes.Precision = 3;
-                area.YAxes.UnitString = "";
-                grp.AddChartObject(area);
-                grp.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(timeSel), 0);
-                chart.AutoSetXScale();
-
-
-                for (int i = 0; i < dcProperties.Count; i++)
-                {
-                    int curveIndex = devType.DCProperties[i].PropertyIndex + selectDev.Index * 20;
-                    List<StationCurve> listCurve = DataStorage.DatabaseModule.GetInstance().QueryCurveHistory(devType.TypeID, curveIndex, timeSel);
-
-                    LineCurve line = new LineCurve(chart, dcProperties[i].Name, 0);
-                    line.LineColor = ColorList[i % ColorList.Length];
-                    area.AddLine(line);
-                    if (listCurve != null && listCurve.Count > 0 && listCurve[0]!=null)
-                    {
-                      
-
-                        for (int j = 0; j < listCurve[0].Points.Length; j++)
-                        {
-                            DateTime time = timeSel.AddMilliseconds(40*j); //40毫秒
-                            LinePoint point = new LinePoint();
-                            point.Value=listCurve[0].Points[j];
-                            point.Time = ChartGraph.DateTime2ChartTime(time);
-                            line.AddPoint(point);
-                        }
-
-                    }
-
-                }
-
-
-
-            }
+            DrawCurve();
+            
         }
 
-        private void DrawCurve()
-        {
- 
-        }
+       
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {

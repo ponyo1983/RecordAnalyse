@@ -14,6 +14,8 @@ namespace ConfigManager.HHFormat.Device
         List<HHDeviceProperty> listProperty = new List<HHDeviceProperty>();
 
         List<HHDeviceProperty> listAnalogProperty = new List<HHDeviceProperty>();
+        List<HHDeviceProperty> listCurveProperty = new List<HHDeviceProperty>();
+
         Dictionary<int, HHSourceGroup> dicSource = new Dictionary<int, HHSourceGroup>();
 
         List<int> listSel = new List<int>();
@@ -38,13 +40,17 @@ namespace ConfigManager.HHFormat.Device
             for (int i = 0; i < propNum; i++)
             {
 
-                HHDeviceProperty prop = new HHDeviceProperty(ini, name, i);
+                HHDeviceProperty prop = new HHDeviceProperty(ini, this, i);
                 if (prop.IsValid)
                 {
                     listProperty.Add(prop);
                     if (prop.Type == "模拟量")
                     {
                         listAnalogProperty.Add(prop);
+                    }
+                    else if (prop.Type == "曲线")
+                    {
+                        listCurveProperty.Add(prop);
                     }
                 }
             }
@@ -168,6 +174,14 @@ namespace ConfigManager.HHFormat.Device
             get
             {
                 return listAnalogProperty.AsReadOnly();
+            }
+        }
+
+        public IList<HHDeviceProperty> CurveProperties
+        {
+            get
+            {
+                return listCurveProperty.AsReadOnly();
             }
         }
 
