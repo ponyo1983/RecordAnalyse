@@ -176,6 +176,9 @@
     <None Include="Config\模拟量.rhhcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Config\记录曲线.rhhcfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Config\设备.rhhcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

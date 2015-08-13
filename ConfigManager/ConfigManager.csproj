@@ -71,9 +71,13 @@
     <Compile Include="HHFormat\Analog\AnalogManager.cs" />
     <Compile Include="HHFormat\Analog\DevAnalog.cs" />
     <Compile Include="HHFormat\Analog\DevAnalogGrp.cs" />
+    <Compile Include="HHFormat\Curve\CurveGroup.cs" />
     <Compile Include="HHFormat\Curve\DevCurve.cs" />
+    <Compile Include="HHFormat\Curve\CurveManager.cs" />
     <Compile Include="HHFormat\Device\HHDevice.cs" />
     <Compile Include="HHFormat\Device\HHDeviceGrp.cs" />
+    <Compile Include="HHFormat\Device\HHDeviceProperty.cs" />
+    <Compile Include="HHFormat\Device\HHSourceGroup.cs" />
     <Compile Include="HHFormat\Property\HHAnalogProperty.cs" />
     <Compile Include="HHFormat\Property\HHDeviceProperty.cs" />
     <Compile Include="HHFormat\HHDeviceManager.cs" />

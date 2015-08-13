@@ -36,8 +36,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.comboBoxEdit2 = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.comboBoxEdit3 = new DevExpress.XtraEditors.ComboBoxEdit();
             this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
             this.completionWizardPage1 = new DevExpress.XtraWizard.CompletionWizardPage();
             this.wizardPage2 = new DevExpress.XtraWizard.WizardPage();
@@ -52,6 +54,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).BeginInit();
             this.wizardPage2.SuspendLayout();
             this.SuspendLayout();
@@ -93,8 +96,10 @@
             // 
             this.wizardPage1.Controls.Add(this.groupBox1);
             this.wizardPage1.Controls.Add(this.labelControl2);
+            this.wizardPage1.Controls.Add(this.labelControl5);
             this.wizardPage1.Controls.Add(this.labelControl1);
             this.wizardPage1.Controls.Add(this.comboBoxEdit2);
+            this.wizardPage1.Controls.Add(this.comboBoxEdit3);
             this.wizardPage1.Controls.Add(this.comboBoxEdit1);
             this.wizardPage1.DescriptionText = "信号选择: 选择监测设备的对应的采集数据";
             this.wizardPage1.Name = "wizardPage1";
@@ -127,11 +132,19 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(17, 45);
+            this.labelControl2.Location = new System.Drawing.Point(17, 46);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(52, 14);
             this.labelControl2.TabIndex = 4;
             this.labelControl2.Text = "设备名称:";
+            // 
+            // labelControl5
+            // 
+            this.labelControl5.Location = new System.Drawing.Point(302, 17);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(64, 14);
+            this.labelControl5.TabIndex = 5;
+            this.labelControl5.Text = "设备子类型:";
             // 
             // labelControl1
             // 
@@ -154,6 +167,20 @@
             this.comboBoxEdit2.TabIndex = 2;
             this.comboBoxEdit2.EditValueChanged += new System.EventHandler(this.comboBoxEdit2_EditValueChanged);
             // 
+            // comboBoxEdit3
+            // 
+            this.comboBoxEdit3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxEdit3.Location = new System.Drawing.Point(374, 14);
+            this.comboBoxEdit3.Name = "comboBoxEdit3";
+            this.comboBoxEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.comboBoxEdit3.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.comboBoxEdit3.Size = new System.Drawing.Size(242, 21);
+            this.comboBoxEdit3.TabIndex = 3;
+            this.comboBoxEdit3.SelectedIndexChanged += new System.EventHandler(this.comboBoxEdit3_SelectedIndexChanged);
+            // 
             // comboBoxEdit1
             // 
             this.comboBoxEdit1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -164,7 +191,7 @@
             this.comboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.comboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.comboBoxEdit1.Size = new System.Drawing.Size(531, 21);
+            this.comboBoxEdit1.Size = new System.Drawing.Size(201, 21);
             this.comboBoxEdit1.TabIndex = 3;
             this.comboBoxEdit1.SelectedIndexChanged += new System.EventHandler(this.comboBoxEdit1_SelectedIndexChanged);
             // 
@@ -239,6 +266,7 @@
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).EndInit();
             this.wizardPage2.ResumeLayout(false);
             this.wizardPage2.PerformLayout();
@@ -264,5 +292,7 @@
         private System.Windows.Forms.ProgressBar progressBar2;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Timer timer1;
+        private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.ComboBoxEdit comboBoxEdit3;
     }
 }

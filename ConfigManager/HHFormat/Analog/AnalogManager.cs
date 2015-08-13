@@ -42,7 +42,7 @@ namespace ConfigManager.HHFormat.Analog
             IniDocument ini = new IniDocument();
             ini.Load(fileName);
             int num = ini.GetInt("模拟量类型", "数目", 0);
-            for (int i = 1; i <= num; i++)
+            for (int i = 0; i < num; i++)
             {
                 DevAnalogGrp grp = new DevAnalogGrp(ini, i);
                 if (grp.IsValid==false) continue;

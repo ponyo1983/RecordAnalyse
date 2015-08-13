@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using ConfigManager.HHFormat.Analog;
 using ConfigManager.HHDevice;
+using ConfigManager.HHFormat.Curve;
 
 namespace RecordAnalyse
 {
@@ -22,6 +23,11 @@ namespace RecordAnalyse
             HHDeviceManager.GetInstance();
 
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CurveManager.GetInstance();
         }
     }
 }

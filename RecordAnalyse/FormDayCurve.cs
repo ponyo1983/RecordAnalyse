@@ -9,18 +9,18 @@ using ConfigManager.Device;
 using UltraChart;
 using Common;
 using DataStorage;
+using ConfigManager.HHDevice;
+using ConfigManager.HHFormat.Device;
 
 namespace RecordAnalyse
 {
     public partial class FormDayCurve : Form
     {
 
-
-        List<DeviceType> listTypes = new List<DeviceType>();
         UltraChart.CurveGroup dayCurveGroup;
 
 
-        Device selectDev = null;
+        HHDevice selectDev = null;
 
 
       static readonly  Color[] colorList = new Color[] { Color.Red, Color.Lime, Color.Yellow };
@@ -38,15 +38,15 @@ namespace RecordAnalyse
             this.dayCurveGroup.DrawPointFlagXAxesScale = 5000000;
 
 
-            IList<DeviceType> types = DeviceTypeManager.GetInstance().DeviceTypes;
+            IList<HHDeviceGrp> types = HHDeviceManager.GetInstance().DeviceGroupsUnsort;
 
 
-            foreach (DeviceType type in types)
+            foreach (HHDeviceGrp type in types)
             {
                 if (type.AnalogProperties.Count > 0)
                 {
-                   comboBoxEdit1.Properties.Items.Add(type.Name);
-                   listTypes.Add(type);
+                   comboBoxEdit1.Properties.Items.Add(type);
+                
                  
                 }
             }
@@ -67,12 +67,12 @@ namespace RecordAnalyse
         {
             if (comboBoxEdit1.SelectedIndex >= 0)
             {
-               
-
-                DeviceType devType =listTypes[comboBoxEdit1.SelectedIndex];
 
 
-                List<Device> listDev = DeviceManager.GetInstance().GetDevices(devType.TypeID);
+                HHDeviceGrp devType = comboBoxEdit1.SelectedItem as HHDeviceGrp;
+
+
+                IList<HHDevice> listDev = devType.Devices;
 
                 comboBoxEdit2.Properties.Items.Clear();
 
@@ -80,16 +80,13 @@ namespace RecordAnalyse
                 comboBoxEdit2.Text = "";
                 for (int i = 0; i < listDev.Count; i++)
                 {
-                    comboBoxEdit2.Properties.Items.Add(listDev[i].Name);
+                    comboBoxEdit2.Properties.Items.Add(listDev[i]);
                 }
 
                 if (listDev.Count > 0)
                 {
                     comboBoxEdit2.SelectedIndex = 0;
                 }
-
-
-
 
                 gridControl1.DataSource = devType.AnalogProperties;
             }
@@ -99,13 +96,7 @@ namespace RecordAnalyse
         {
             if (comboBoxEdit1.SelectedIndex >= 0 && comboBoxEdit2.SelectedIndex>=0)
             {
-
-                DeviceType devType = listTypes[comboBoxEdit1.SelectedIndex];
-
-
-                List<Device> listDev = DeviceManager.GetInstance().GetDevices(devType.TypeID);
-
-                selectDev = listDev[comboBoxEdit2.SelectedIndex];
+                selectDev = comboBoxEdit2.SelectedItem as HHDevice;
 
                 DrawCurve();
             }
@@ -116,7 +107,7 @@ namespace RecordAnalyse
             if (e.Column.FieldName == "Selected")
             {
 
-                DeviceType devType = listTypes[comboBoxEdit1.SelectedIndex];
+                HHDeviceGrp devType = comboBoxEdit1.SelectedItem as HHDeviceGrp;
 
                 devType.SelectProperty(e.RowHandle, (bool)e.Value);
 
@@ -127,6 +118,8 @@ namespace RecordAnalyse
                 {
                     gridView1.RefreshRow(i);
                 }
+
+                DrawCurve();
             }
         }
 
@@ -136,7 +129,7 @@ namespace RecordAnalyse
             DateTime time = dateEdit1.DateTime.Date;
             this.dayCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(time), 0);
           
-            List<DeviceProperty> listProp = selectDev.DevType.AnalogProperties;
+            IList<HHDeviceProperty> listProp = selectDev.DevGroup.AnalogProperties;
 
             int colorIndex = -1;
 
@@ -146,7 +139,8 @@ namespace RecordAnalyse
             {
                 if (listProp[i].Selected == false) continue;
                 colorIndex++;
-                int analogIndex = listProp[i].PropertyIndex + selectDev.Index * 20;
+                HHDeviceProperty devProp = selectDev.GetProperty(listProp[i]);
+                int analogIndex = devProp.Analog.Index;
                 LineArea la = new LineArea(chart, listProp[i].Name, false);
                 la.YAxes.YAxesMin = 0;
                 la.YAxes.YAxesMax = 200;
@@ -155,10 +149,10 @@ namespace RecordAnalyse
                 lc.LineColor = colorList[colorIndex%colorList.Length];
                 la.AddLine(lc);
                 //lc.YAxes.Mode = YAxesMode.Manual;
-                lc.YAxes.YAxesMin = listProp[i].RangeLow;
-                lc.YAxes.YAxesMax = listProp[i].RangeHigh;
+                lc.YAxes.YAxesMin = devProp.Analog.ADMin;
+                lc.YAxes.YAxesMax = devProp.Analog.ADMax;
 
-                List<AnalogRecordGroup> r = DatabaseModule.GetInstance().QueryAnalogHistory(selectDev.DevType.TypeID, analogIndex, time, time.AddDays(1));
+                List<AnalogRecordGroup> r = DatabaseModule.GetInstance().QueryAnalogHistory(devProp.Analog.Group.Type, analogIndex, time, time.AddDays(1));
 
 
                 if (r != null && r.Count > 0)

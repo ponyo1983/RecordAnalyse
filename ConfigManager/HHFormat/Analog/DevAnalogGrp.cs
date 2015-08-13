@@ -20,7 +20,7 @@ namespace ConfigManager.HHFormat.Analog
         public DevAnalogGrp(IniDocument docIni, int index)
         {
 
-            string name = docIni.GetString("模拟量类型", index.ToString());
+            string name = docIni.GetString("模拟量类型", (index+1).ToString());
             if (string.IsNullOrEmpty(name)) return;
             this.Name = name;
             int type = docIni.GetInt(name, "类型",0);
