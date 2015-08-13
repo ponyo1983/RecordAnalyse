@@ -229,6 +229,10 @@ namespace RecordAnalyse.Record
             {
                 int length = disk.Read(data, 0, data.Length);
                 int sector = length / 512;
+                if (sector + readSector > device.UsedSector - 2)
+                {
+                    sector = device.UsedSector - 2 - readSector;
+                }
                 readSector += sector;
                 fs.Write(data, 0, sector * 512);
                 this.ExportLength = (readSector+2)*512L;
