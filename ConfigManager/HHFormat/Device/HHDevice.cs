@@ -26,12 +26,12 @@ namespace ConfigManager.HHFormat.Device
                 listProp.Add(props[i].Bind(bindName));
 
             }
-
+            this.IsValid = true;
             for (int i = 0; i < listProp.Count; i++)
             {
-                if (listProp[i].IsBind)
+                if (listProp[i].IsBind==false)
                 {
-                    this.IsValid = true;
+                    this.IsValid = false;
                     break;
                 }
             }
