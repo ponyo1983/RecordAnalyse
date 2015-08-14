@@ -80,6 +80,9 @@ namespace RecordAnalyse
             LineArea area = new LineArea(chart, "道岔曲线", true);
             area.IsShowFoldFlag = false;
             area.IsFold = false;
+            area.YAxes.Mode = YAxesMode.Manual;
+            area.YAxes.YAxesMin = curves[0].ADMin;
+            area.YAxes.YAxesMax = curves[0].ADMax;
             area.YAxes.Precision = 3;
             area.YAxes.UnitString = "";
             grp.AddChartObject(area);
@@ -117,7 +120,7 @@ namespace RecordAnalyse
                 }
 
             }
-
+            chart.AutoSetXScale();
             chart.Draw();
         }
         private void comboBoxEdit1_SelectedIndexChanged(object sender, EventArgs e)

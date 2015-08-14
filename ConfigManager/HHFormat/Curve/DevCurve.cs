@@ -10,10 +10,24 @@ namespace ConfigManager.HHFormat.Curve
         {
             this.Group = grp;
             this.Index = index;
-
-            this.Name = ini.GetString(grp.Name + "\\" + (index + 1), "设备名称");
+            string section=grp.Name + "\\" + (index + 1);
+            this.Name = ini.GetString(section, "设备名称");
             if (string.IsNullOrEmpty(this.Name)) return;
             if (this.Name.ToUpper() == "DUMMY") return;
+
+            this.ADMax = grp.ADMax;
+            this.ADMin = grp.ADMin;
+
+            float limit = ini.GetFloat(section, "AD最小", float.NaN);
+            if (float.IsNaN(limit) == false)
+            {
+                this.ADMin = limit;
+            }
+            limit = ini.GetFloat(section, "AD最大", float.NaN);
+            if (float.IsNaN(limit) == false)
+            {
+                this.ADMax = limit;
+            }
 
             this.Tag = ini.GetInt(grp.Name + "\\" + (index + 1), "标志", 0);
             this.IsValid = true;
@@ -42,6 +56,18 @@ namespace ConfigManager.HHFormat.Curve
             private set;
 
         }
+        public float ADMax
+        {
+            get;
+            private set;
+        }
+
+        public float ADMin
+        {
+            get;
+            private set;
+        }
+
         public CurveGroup Group
         {
             get;
