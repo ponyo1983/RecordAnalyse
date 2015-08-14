@@ -289,9 +289,13 @@ namespace RecordAnalyse
 
                         int srcIndex = i / PropChannelNum;
 
-                       
+
+                        sigChannel.DecodeFM = false;
+                        sigChannel.DecodeCurve = 0;
+                        sigChannel.DecodeAngle = false;
+
                         sigChannel.DecodeFM=selectDevice.DevGroup.SourceGroups[srcIndex].AllowFM;
-                        bool allowCurve=selectDevice.DevGroup.SourceGroups[srcIndex].AllowCurve;
+                        int allowCurve=selectDevice.DevGroup.SourceGroups[srcIndex].AllowCurve;
                         sigChannel.DecodeCurve = allowCurve;
                         bool allowAngle = selectDevice.DevGroup.SourceGroups[srcIndex].AllowAngle;
                         sigChannel.DecodeAngle = allowAngle;
@@ -302,7 +306,7 @@ namespace RecordAnalyse
                             sigChannel1.IsReference = true;
                             selectChannels[i + 1].File.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
                         }
-                        else if (allowCurve && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
+                        else if ((allowCurve>0) && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
                         {
                            HHDeviceProperty devBindProp= selectDevice.GetProperty(selectDevice.DevGroup.SourceGroups[srcIndex].Properties[0]);
                             DevCurve devCurve= devBindProp.Curves[0];
@@ -331,7 +335,7 @@ namespace RecordAnalyse
                             sigChannel1.DecodeAngle = true;
                             sigChannel1.SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
                         }
-                        else if (allowCurve && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
+                        else if ((allowCurve>0) && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
                         {
                             HHDeviceProperty devBindProp = selectDevice.GetProperty(selectDevice.DevGroup.SourceGroups[srcIndex].Properties[0]);
                             DevCurve devCurve = devBindProp.Curves[0];
@@ -352,9 +356,7 @@ namespace RecordAnalyse
                         {
                             sigChannel.SignalArgsChanged -= new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
                         }
-                        sigChannel.DecodeFM = false;
-                        sigChannel.DecodeCurve = false;
-                        sigChannel.DecodeAngle = false;
+                        
                         
                     }
                 }
@@ -432,7 +434,7 @@ namespace RecordAnalyse
 
                     HHDeviceProperty devProp = selectDevice.GetProperty(prop);
                     DevAnalog devAnalog = devProp.Analog;
-
+                    List<DevCurve> devCurves = devProp.Curves;
                     switch (prop.MonitorType)
                     {
                         case Common.SignalType.SignalAC:
@@ -460,7 +462,10 @@ namespace RecordAnalyse
                             }
                             break;
                         case Common.SignalType.SignalACCurve:
-                            DataStorage.DatabaseModule.GetInstance().AddCurve(prop.Analog.Index, prop.Analog.Index, e.Time, 25, e.ACCurve);
+                            if (devCurves != null && devCurves.Count > 0)
+                            {
+                                DataStorage.DatabaseModule.GetInstance().AddCurve(devCurves[0].Group.Type, devCurves[0].Index, e.Time, 25, e.ACCurve);
+                            }
                             break;
                         case Common.SignalType.SignalDCCurve:
                             break;

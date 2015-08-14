@@ -157,13 +157,16 @@ namespace RecordAnalyse
 
                 HHDevice dev = comboBoxEdit2.SelectedItem as HHDevice;
 
-                selectDev = dev;
+                HHDeviceProperty devProp = dev.GetProperty(prop);
+
+
+                List<DevCurve> curves = devProp.Curves;
 
 
                 int curveIndex = 0;
 
 
-               List<DateTime>  listTime = DataStorage.DatabaseModule.GetInstance().QueryCurveTimeList(0, curveIndex);
+               List<DateTime>  listTime = DataStorage.DatabaseModule.GetInstance().QueryCurveTimeList(curves[0].Group.Type, curves[0].Index);
 
               
                 comboBoxEdit3.Properties.Items.Clear();

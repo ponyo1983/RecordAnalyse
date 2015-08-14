@@ -41,7 +41,7 @@ namespace RecordAnalyse.Record
             set;
         }
 
-        public bool DecodeCurve
+        public int DecodeCurve
         {
             get;
             set;
@@ -66,7 +66,7 @@ namespace RecordAnalyse.Record
             this.recordFile = recordFile;
             this.eventDSP = autoEvent;
 
-            this.DecodeCurve = false;
+            this.DecodeCurve = 0;
             this.DecodeFM = false;
             this.DecodeAngle = false;
             UInt16 crc = CRC16.ComputeCRC16(data, offset, 124 - 2);
@@ -315,8 +315,8 @@ namespace RecordAnalyse.Record
             int[] peakIndexRight = new int[PeakNum];
             float[] dcacAmpl = new float[2];
 
-            float[] amplDenseAC = new float[25];
-            float[] amplDenseDC = new float[25];
+            float[] amplDenseACDC = new float[25];
+           // float[] amplDenseDC = new float[25];
 
 
 
@@ -355,16 +355,23 @@ namespace RecordAnalyse.Record
                         continue;
                     }
                     if (adData == null) continue;
-                    if (DecodeCurve) //计算道岔曲线 ，不计算载频和低频
+                    if (DecodeCurve>0) //计算道岔曲线 ，不计算载频和低频
                     {
 
                         int amplCnt = this.SampleRate / 25; //40ms一个点
 
                         for (int i = 0; i < 25; i++)
                         {
-                            amplDenseAC[i] = util.CalACAmpl(adData, i * amplCnt, amplCnt);
-                            amplDenseAC[i] = CalRealVal(amplDenseAC[i], 50); //道岔电流都是交流50Hz
-
+                            if (DecodeCurve == 1)
+                            {
+                                amplDenseACDC[i] = util.CalACAmpl(adData, i * amplCnt, amplCnt);
+                                amplDenseACDC[i] = CalRealVal(amplDenseACDC[i], 50); //道岔电流都是交流50Hz
+                            }
+                            else if (DecodeCurve == 2)
+                            {
+                                amplDenseACDC[i] = util.CalDCAmpl(adData, i * amplCnt, amplCnt);
+                                amplDenseACDC[i] = CalRealVal(amplDenseACDC[i], 0); 
+                            }
                             if (curveStart == false)
                             {
                                 if (queueACCurve.Count >= 2)
@@ -392,9 +399,9 @@ namespace RecordAnalyse.Record
                             }
                             else
                             {
-                                curveList.Add(amplDenseAC[i]);
+                                curveList.Add(amplDenseACDC[i]);
 
-                                if (amplDenseAC[i] < 0.2f)
+                                if (amplDenseACDC[i] < 0.2f)
                                 {
                                     maxCurveCnt = curveList.Count + 5;
                                 }
@@ -434,11 +441,10 @@ namespace RecordAnalyse.Record
                             {
                                 queueACCurve.Dequeue();
                             }
-                            queueACCurve.Enqueue(amplDenseAC[i]);
+                            queueACCurve.Enqueue(amplDenseACDC[i]);
 
 
-                            amplDenseDC[i] = util.CalDCAmpl(adData, i * amplCnt, amplCnt);
-                            amplDenseDC[i] = CalRealVal(amplDenseDC[i], 0); //直流幅度
+                          
 
                         }
 

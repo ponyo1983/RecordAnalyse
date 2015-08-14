@@ -54,21 +54,21 @@ namespace ConfigManager.HHFormat.Device
 
         }
 
-        public bool AllowCurve
+        public int AllowCurve
         {
             get
             {
-                bool allow = false;
+                int allow = 0;
                 foreach (HHDeviceProperty prop in listProp)
                 {
                     if (prop.MonitorType == SignalType.SignalACCurve)
                     {
-                        allow = true;
+                        allow = 1;
                         break;
                     }
                     if (prop.MonitorType == SignalType.SignalDCCurve)
                     {
-                        allow = true;
+                        allow = 2;
                         break;
                     }
                 }
