@@ -112,6 +112,7 @@ namespace RecordAnalyse.Record
                     calList.Add(calItm);
                 }
             }
+            this.TimeInterval = 40; //默认是40毫秒计算一个点
         }
 
 
@@ -297,6 +298,12 @@ namespace RecordAnalyse.Record
         }
 
 
+        public float TimeInterval
+        {
+            get;
+            set;
+        }
+
         private void ProcDSP()
         {
             DSPUtil util = new DSPUtil();
@@ -315,7 +322,7 @@ namespace RecordAnalyse.Record
             int[] peakIndexRight = new int[PeakNum];
             float[] dcacAmpl = new float[2];
 
-            float[] amplDenseACDC = new float[25];
+            float[] amplDense = new float[250];
            // float[] amplDenseDC = new float[25];
 
 
@@ -341,7 +348,7 @@ namespace RecordAnalyse.Record
             Queue<float> queueACCurve = new Queue<float>();
 
             int maxCurveCnt = 0;
-
+            int MAXPT=40*25;
             this.adBlock = new ADBlock(SampleRate, SampleRate);
             try
             {
@@ -357,20 +364,20 @@ namespace RecordAnalyse.Record
                     if (adData == null) continue;
                     if (DecodeCurve>0) //计算道岔曲线 ，不计算载频和低频
                     {
+                        int calCnt = (int)(1000 / this.TimeInterval);
+                        int amplCnt = this.SampleRate / calCnt; //40ms一个点
 
-                        int amplCnt = this.SampleRate / 25; //40ms一个点
-
-                        for (int i = 0; i < 25; i++)
+                        for (int i = 0; i < calCnt; i++)
                         {
                             if (DecodeCurve == 1)
                             {
-                                amplDenseACDC[i] = util.CalACAmpl(adData, i * amplCnt, amplCnt);
-                                amplDenseACDC[i] = CalRealVal(amplDenseACDC[i], 50); //道岔电流都是交流50Hz
+                                amplDense[i] = util.CalACAmpl(adData, i * amplCnt, amplCnt);
+                                amplDense[i] = CalRealVal(amplDense[i], 50); //道岔电流都是交流50Hz
                             }
                             else if (DecodeCurve == 2)
                             {
-                                amplDenseACDC[i] = util.CalDCAmpl(adData, i * amplCnt, amplCnt);
-                                amplDenseACDC[i] = CalRealVal(amplDenseACDC[i], 0); 
+                                amplDense[i] = util.CalDCAmpl(adData, i * amplCnt, amplCnt);
+                                amplDense[i] = CalRealVal(amplDense[i], 0); 
                             }
                             if (curveStart == false)
                             {
@@ -388,7 +395,7 @@ namespace RecordAnalyse.Record
                                                 curveStart = true;
 
                                                 curveList.AddRange(prevVals);
-                                                maxCurveCnt = 40 * 25;
+                                                maxCurveCnt = MAXPT;
                                                 break;
                                             }
                                         }
@@ -399,41 +406,24 @@ namespace RecordAnalyse.Record
                             }
                             else
                             {
-                                curveList.Add(amplDenseACDC[i]);
+                                curveList.Add(amplDense[i]);
 
-                                if (amplDenseACDC[i] < 0.2f)
+                                if (amplDense[i] < 0.1f)
                                 {
-                                    maxCurveCnt = curveList.Count + 5;
-                                }
-                                else
-                                {
-                                    if (queueACCurve.Count >= 2)
+                                    if (maxCurveCnt >= MAXPT)
                                     {
-                                        float[] prevVals = queueACCurve.ToArray();
-
-                                        for (int j = 1; j < prevVals.Length; j++)
-                                        {
-                                            if (prevVals[j] > 0.01f)
-                                            {
-                                                float rate = (prevVals[0] - prevVals[j]) / prevVals[j];
-                                                if (rate > 5)
-                                                {
-                                                    maxCurveCnt = curveList.Count + 5;
-                                                    break;
-                                                }
-                                            }
-                                        }
-
+                                        maxCurveCnt = curveList.Count + 5;
                                     }
                                 }
 
                                 if (curveList.Count >= maxCurveCnt) //最大40秒
                                 {
-                                    args = new SignalArgs(recordFile.TimeExport, curveList.ToArray());
+                                    args = new SignalArgs(recordFile.TimeExport.AddMilliseconds(-1*this.TimeInterval*curveList.Count), curveList.ToArray());
                                     SignalArgsChanged(this, args);
                                     curveStart = false;
                                     maxCurveCnt = 0;
                                     curveList.Clear();
+                                    queueACCurve.Clear();
                                 }
 
                             }
@@ -441,7 +431,7 @@ namespace RecordAnalyse.Record
                             {
                                 queueACCurve.Dequeue();
                             }
-                            queueACCurve.Enqueue(amplDenseACDC[i]);
+                            queueACCurve.Enqueue(amplDense[i]);
 
 
                           

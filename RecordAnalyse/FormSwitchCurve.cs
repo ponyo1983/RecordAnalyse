@@ -110,7 +110,7 @@ namespace RecordAnalyse
 
                     for (int j = 0; j < listCurve[i].Points.Length; j++)
                     {
-                        DateTime time = timeSel.AddMilliseconds(curves[i].Group.TimeInterval * j); //40毫秒
+                        DateTime time = timeSel.AddMilliseconds(curves[i].TimeInterval * j); //40毫秒
                         LinePoint point = new LinePoint();
                         point.Value = listCurve[i].Points[j];
                         point.Time = ChartGraph.DateTime2ChartTime(time);
@@ -164,9 +164,6 @@ namespace RecordAnalyse
 
 
                 List<DevCurve> curves = devProp.Curves;
-
-
-                int curveIndex = 0;
 
 
                List<DateTime>  listTime = DataStorage.DatabaseModule.GetInstance().QueryCurveTimeList(curves[0].Group.Type, curves[0].Index);

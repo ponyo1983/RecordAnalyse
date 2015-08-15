@@ -306,22 +306,41 @@ namespace RecordAnalyse
                             sigChannel1.IsReference = true;
                             selectChannels[i + 1].File.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
                         }
-                        else if ((allowCurve>0) && ((selectChannels[i + 1] != null) || (selectChannels[i + 2] != null))) //有2条以上曲线
+                        else if (allowCurve>0) //解码道岔曲线
                         {
                            HHDeviceProperty devBindProp= selectDevice.GetProperty(selectDevice.DevGroup.SourceGroups[srcIndex].Properties[0]);
                             DevCurve devCurve= devBindProp.Curves[0];
-                            curveGrp = new Common.CurveGroup(3, devCurve.Group.Type, devCurve.Index);
+                            sigChannel.TimeInterval = devCurve.TimeInterval;
 
-                            sigChannel.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedA);
-                            if (selectChannels[i + 1] != null)
+                            if (devCurve.MonitorType == Common.SignalType.SignalDCCurve)
                             {
-                                selectChannels[i + 1].File.Channels[selectChannels[i + 1].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedB); //B相
+                                sigChannel.DecodeCurve = 2;
                             }
-                            if (selectChannels[i + 2] != null)
+                            else
                             {
-                                selectChannels[i + 2].File.Channels[selectChannels[i + 2].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedC); //C相
+                                sigChannel.DecodeCurve = 1;
                             }
-                           
+
+                            if ((selectChannels[i + 1] == null) && (selectChannels[i + 2] == null)) //单相
+                            {
+                                sigChannel.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChanged);
+                            }
+                            else
+                            {
+                                curveGrp = new Common.CurveGroup(3, devCurve.Group.Type, devCurve.Index);
+
+
+                                sigChannel.SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedA);
+
+                                if (selectChannels[i + 1] != null)
+                                {
+                                    selectChannels[i + 1].File.Channels[selectChannels[i + 1].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedB); //B相
+                                }
+                                if (selectChannels[i + 2] != null)
+                                {
+                                    selectChannels[i + 2].File.Channels[selectChannels[i + 2].Channel - 1].SignalArgsChanged += new EventHandler<RecordAnalyse.Signal.SignalArgs>(FormDataWizard_SignalArgsChangedC); //C相
+                                }
+                            }
                         }
                         else
                         {
