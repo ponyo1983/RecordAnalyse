@@ -418,7 +418,7 @@ namespace RecordAnalyse.Record
 
                                 if (curveList.Count >= maxCurveCnt) //最大40秒
                                 {
-                                    args = new SignalArgs(recordFile.TimeExport.AddMilliseconds(-1*this.TimeInterval*curveList.Count), curveList.ToArray());
+                                    args = new SignalArgs(recordFile.TimeExport.AddMilliseconds(-1 * this.TimeInterval * curveList.Count + i *1000f/ calCnt), curveList.ToArray());
                                     SignalArgsChanged(this, args);
                                     curveStart = false;
                                     maxCurveCnt = 0;
