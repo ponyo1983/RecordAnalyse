@@ -26,6 +26,8 @@ namespace RecordAnalyse.Record
         const int MaxPt = 3;
 
 
+        private static readonly string[] ChannelNames = new string[] { "轨道电路", "交流道岔", "直流道岔", "交流信号机", "直流信号机", "综合电流采集", "综合电压采集" };
+
         public IList<CalcItem> CalcList
         {
             get
@@ -149,6 +151,26 @@ namespace RecordAnalyse.Record
             get;
             set;
         }
+
+        public string ChannelName
+        {
+            get
+            {
+
+                //先将10进制变成16进制
+
+                int channel = this.ChannelType / 10 * 16 + (this.ChannelType % 10);
+
+                int type = (channel >> 4) & 0x0f;
+                int index = channel & 0x0f;
+                if (type >= 0 && type < ChannelNames.Length)
+                {
+                    return ChannelNames[type] + ":通道"+index;
+                }
+                return "";
+            }
+        }
+
 
         public DateTime Time
         {

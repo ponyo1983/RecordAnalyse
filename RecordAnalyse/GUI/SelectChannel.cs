@@ -10,9 +10,9 @@ namespace RecordAnalyse.GUI
 
         RecordFile file;
         int channel;
-        public SelectChannel(RecordFile file, int channel, int index)
+        public SelectChannel(RecordDisk disk, int channel, int index)
         {
-            this.file = file;
+            this.file = disk.RecordList[index-1];
             this.channel = channel;
             this.RecordIndex = index;
             this.BeginTime = file.BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -37,6 +37,9 @@ namespace RecordAnalyse.GUI
 
 
             this.Channel = channel;
+            this.ChannelName = file.Channels[channel - 1].ChannelName;
+           this.ModuleID=file.RecordDevice.DeviceInfo.DevCode+":"+file.RecordDevice.DeviceInfo.ID;
+           this.TimeCal = file.Channels[channel - 1].Time;
         }
 
 
@@ -70,6 +73,14 @@ namespace RecordAnalyse.GUI
             private set;
         }
 
+
+        public DateTime TimeCal
+        {
+            get;
+            private set;
+        }
+
+
         public string TimeLength
         {
             get;
@@ -91,10 +102,25 @@ namespace RecordAnalyse.GUI
             }
         }
 
-        public string ToString()
+        public string ChannelName
+        {
+            get;
+            private set;
+        }
+
+        public override string ToString()
         {
             return file.Disk.DriveName + "\\" + RecordIndex + ":" + channel;
             
         }
+
+        public string ModuleID
+        {
+            get;
+            private set;
+        }
+
+       
+
     }
 }

@@ -12,12 +12,13 @@ namespace RecordAnalyse.GUI
 
         public DiskChannel(RecordDisk disk)
         {
+            
             for (int i = 0; i < disk.RecordList.Count; i++)
             {
-                RecordFile file=disk.RecordList[i];
+                RecordFile file = disk.RecordList[i];
                 for (int j = 0; j < file.Channels.Count; j++)
                 {
-                    SelectChannel channel = new SelectChannel(file, j+1, i+1);
+                    SelectChannel channel = new SelectChannel(disk, j + 1, i + 1);
                     channels.Add(channel);
                 }
             }

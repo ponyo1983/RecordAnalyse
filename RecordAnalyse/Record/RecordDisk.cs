@@ -7,7 +7,7 @@ using System.IO;
 
 namespace RecordAnalyse.Record
 {
-    class RecordDisk
+  public  class RecordDisk
     {
 
         RecordControl recordControl;

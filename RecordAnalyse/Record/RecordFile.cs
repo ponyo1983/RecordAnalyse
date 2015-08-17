@@ -22,6 +22,7 @@ namespace RecordAnalyse.Record
         public event EventHandler<SignalArgs> SignalArgsChanged;
 
         byte[] dataChannel = new byte[512];
+
         public RecordFile(DiskUtil disk, long offset,int index)
         {
             this.disk = disk;
@@ -53,6 +54,14 @@ namespace RecordAnalyse.Record
             this.FileIndex = index+1;
         }
 
+
+        public RecordDevice RecordDevice
+        {
+            get
+            {
+                return device;
+            }
+        }
         public bool Select
         {
             get;

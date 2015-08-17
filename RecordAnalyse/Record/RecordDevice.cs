@@ -6,7 +6,7 @@ using System.IO;
 
 namespace RecordAnalyse.Record
 {
-    class RecordDevice
+   public class RecordDevice
     {
 
         string Tag = "";
@@ -33,6 +33,11 @@ namespace RecordAnalyse.Record
             this.UsedSector = BitConverter.ToInt32(sectorData, 138);
             this.UsedRate = BitConverter.ToInt16(sectorData, 142);
             this.Overflow = BitConverter.ToInt32(sectorData, 144);
+        }
+
+        public DeviceInfo DeviceInfo
+        {
+            get { return devInfo; }
         }
 
         public bool IsValid
