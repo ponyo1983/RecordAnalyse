@@ -161,7 +161,7 @@ namespace RecordAnalyse.Record
 
                 int channel = this.ChannelType / 10 * 16 + (this.ChannelType % 10);
 
-                int type = (channel >> 4) & 0x0f;
+                int type = ((channel >> 4) & 0x0f)-1;
                 int index = channel & 0x0f;
                 if (type >= 0 && type < ChannelNames.Length)
                 {
