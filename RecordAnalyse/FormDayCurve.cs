@@ -151,7 +151,15 @@ namespace RecordAnalyse
                 lc.YAxes.Mode = YAxesMode.Manual;
                 lc.YAxes.YAxesMin = devProp.Analog.ADMin;
                 lc.YAxes.YAxesMax = devProp.Analog.ADMax;
-
+                lc.YAxes.UnitString = listProp[i].Unit;
+                if (devProp.Analog.ADMax < 1)
+                {
+                    lc.YAxes.Precision = 2;
+                }
+                else if (devProp.Analog.ADMax < 10)
+                {
+                    lc.YAxes.Precision = 1;
+                }
                 List<AnalogRecordGroup> r = DatabaseModule.GetInstance().QueryAnalogHistory(devProp.Analog.Group.Type, analogIndex, time, time.AddDays(1));
 
 

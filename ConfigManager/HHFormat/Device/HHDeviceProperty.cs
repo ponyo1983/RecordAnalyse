@@ -67,6 +67,8 @@ namespace ConfigManager.HHFormat.Device
             }
 
 
+            this.Unit = ini.GetString(sectionName, "单位");
+
             this.IsValid = true;
         }
 
@@ -113,6 +115,12 @@ namespace ConfigManager.HHFormat.Device
         }
 
         public SignalType MonitorType
+        {
+            get;
+            private set;
+        }
+
+        public string Unit
         {
             get;
             private set;
