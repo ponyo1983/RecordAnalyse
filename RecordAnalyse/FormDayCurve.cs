@@ -148,7 +148,7 @@ namespace RecordAnalyse
                
                 lc.LineColor = colorList[colorIndex%colorList.Length];
                 la.AddLine(lc);
-                //lc.YAxes.Mode = YAxesMode.Manual;
+                lc.YAxes.Mode = YAxesMode.Manual;
                 lc.YAxes.YAxesMin = devProp.Analog.ADMin;
                 lc.YAxes.YAxesMax = devProp.Analog.ADMax;
 

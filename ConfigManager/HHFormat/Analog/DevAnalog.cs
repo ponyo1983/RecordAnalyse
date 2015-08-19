@@ -12,19 +12,22 @@ namespace ConfigManager.HHFormat.Analog
             this.Group = grp;
             this.Index = index;
 
-            this.Name = ini.GetString(grp.Name + "\\" + (index + 1), "设备名称");
+            string section = grp.Name + "\\" + (index + 1);
+
+            this.Name = ini.GetString(section, "设备名称");
             if (string.IsNullOrEmpty(this.Name)) return;
             if (this.Name.ToUpper() == "DUMMY") return;
 
-            string min = ini.GetString(grp.Name + "\\" + (index + 1), "AD最小");
-            string max = ini.GetString(grp.Name + "\\" + (index + 1), "AD最大");
+    
 
-            float val = 0;
+            float val=  ini.GetFloat(section, "AD最小", float.NaN);
 
-            float.TryParse(min, out val);
-            this.ADMin = val;
-            float.TryParse(max, out val);
-            this.ADMax = val;
+            this.ADMin = float.IsNaN(val) ? grp.ADMin : val;
+           
+
+            val = ini.GetFloat(section, "AD最大", float.NaN);
+
+            this.ADMax = float.IsNaN(val) ? grp.ADMax : val;
 
             this.IsValid = true;
 

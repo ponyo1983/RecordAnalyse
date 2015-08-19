@@ -28,6 +28,12 @@ namespace ConfigManager.HHFormat.Analog
             this.Type = type;
             this.Unit = docIni.GetString(name, "单位");
             int analogNum = docIni.GetInt(name, "数目", 0);
+
+            float val = docIni.GetFloat(name, "AD最小", float.NaN);
+            this.ADMin = float.IsNaN(val) ? 0 : val;
+            val = docIni.GetFloat(name, "AD最大", float.NaN);
+            this.ADMax = float.IsNaN(val) ? 0 : val;
+
             for (int i = 0; i < analogNum; i++)
             {
                 DevAnalog analog = new DevAnalog(docIni,this,i);
@@ -70,6 +76,18 @@ namespace ConfigManager.HHFormat.Analog
 
 
         public int AnalogNum
+        {
+            get;
+            private set;
+        }
+
+        public float ADMin
+        {
+            get;
+            private set;
+        }
+
+        public float ADMax
         {
             get;
             private set;
