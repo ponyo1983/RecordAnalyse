@@ -20,6 +20,8 @@ namespace RecordAnalyse
 
         private void FormSignalSelect_Load(object sender, EventArgs e)
         {
+
+            DiskManager.GetInstance().Reset();
             DriveInfo[] allDrives = DriveInfo.GetDrives();
 
             foreach (DriveInfo info in allDrives)

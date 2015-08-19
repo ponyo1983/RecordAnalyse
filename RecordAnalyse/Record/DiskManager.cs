@@ -28,5 +28,16 @@ namespace RecordAnalyse.Record
             }
             return dicDisk[drive];
         }
+
+        public void Reset()
+        {
+            foreach (RecordDisk disk in dicDisk.Values)
+            {
+                disk.Close();
+            }
+
+            dicDisk.Clear();
+
+        }
     }
 }

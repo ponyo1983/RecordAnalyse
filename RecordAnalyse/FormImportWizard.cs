@@ -63,6 +63,7 @@ namespace RecordAnalyse
                 comboBoxEdit1.SelectedIndex = 0;
             }
 
+            
 
         }
 

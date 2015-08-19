@@ -38,6 +38,11 @@ namespace RecordAnalyse.Record
         }
 
 
+        public void Close()
+        {
+            disk.Close();
+        }
+
         public IList<RecordFile> RecordList
         {
             get

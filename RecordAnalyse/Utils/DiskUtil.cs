@@ -72,6 +72,19 @@ namespace RecordAnalyse.Utils
 
 
 
+        public void Close()
+        {
+
+            if (_DriverStream != null)
+            {
+                _DriverStream.Close();
+            }
+            if (_DriverHandle.IsClosed==false)
+            {
+                _DriverHandle.Close();
+            }
+        }
+
         public string DriveName
         {
             get;

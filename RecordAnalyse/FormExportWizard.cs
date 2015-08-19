@@ -24,6 +24,7 @@ namespace RecordAnalyse
         {
             InitializeComponent();
 
+            DiskManager.GetInstance().Reset();
         }
 
      
