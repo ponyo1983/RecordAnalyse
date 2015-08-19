@@ -162,24 +162,31 @@ namespace RecordAnalyse
                 }
                 List<AnalogRecordGroup> r = DatabaseModule.GetInstance().QueryAnalogHistory(devProp.Analog.Group.Type, analogIndex, time, time.AddDays(1));
 
+                r.Sort();
+                //不考虑回溯
 
                 if (r != null && r.Count > 0)
                 {
-                    List<AnalogRecord> records = r[0].Records;
 
-                    for (int j = 0; j < records.Count; j++)
+                    for (int m = 0; m < r.Count; m++)
                     {
-                        if (drawTime == DateTime.MinValue)
+                        List<AnalogRecord> records = r[m].Records;
+
+                        for (int j = 0; j < records.Count; j++)
                         {
-                            drawTime = records[j].Time;
+                            if (drawTime == DateTime.MinValue)
+                            {
+                                drawTime = records[j].Time;
+                            }
+                            else if (drawTime > records[j].Time)
+                            {
+                                drawTime = records[j].Time;
+                            }
+                            long tm = ChartGraph.DateTime2ChartTime(records[j].Time);
+                            lc.AddPoint(new LinePoint(tm, records[j].Value));
                         }
-                        else if (drawTime > records[j].Time)
-                        {
-                            drawTime = records[j].Time;
-                        }
-                        long tm = ChartGraph.DateTime2ChartTime(records[j].Time);
-                        lc.AddPoint(new LinePoint(tm, records[j].Value));
                     }
+                   
                 }
 
                 dayCurveGroup.AddChartObject(la);

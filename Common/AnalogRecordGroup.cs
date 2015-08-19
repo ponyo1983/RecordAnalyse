@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Common
 {
-   public class AnalogRecordGroup
+   public class AnalogRecordGroup:IComparable
     {
 
        List<AnalogRecord> records;
@@ -30,5 +30,19 @@ namespace Common
        }
 
 
+
+       #region IComparable 成员
+
+       public int CompareTo(object obj)
+       {
+           AnalogRecordGroup grp = obj as AnalogRecordGroup;
+
+           if (grp.records.Count <= 0 || this.records.Count <= 0) return 0;
+
+           return this.records[0].Time.CompareTo(grp.records[0].Time);
+
+       }
+
+       #endregion
     }
 }
