@@ -128,7 +128,8 @@ namespace RecordAnalyse
             dayCurveGroup.ClearChartObject();
             DateTime time = dateEdit1.DateTime.Date;
             this.dayCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(time), 0);
-          
+
+            if (selectDev == null) return;
             IList<HHDeviceProperty> listProp = selectDev.DevGroup.AnalogProperties;
 
             int colorIndex = -1;
