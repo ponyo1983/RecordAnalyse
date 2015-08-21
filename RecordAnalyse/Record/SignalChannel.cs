@@ -371,6 +371,7 @@ namespace RecordAnalyse.Record
 
             int maxCurveCnt = 0;
             int MAXPT=40*25;
+            int PRENUM = 5;
             this.adBlock = new ADBlock(SampleRate, SampleRate);
             try
             {
@@ -403,13 +404,13 @@ namespace RecordAnalyse.Record
                             }
                             if (curveStart == false)
                             {
-                                if (queueACCurve.Count >= 2)
+                                if (queueACCurve.Count >= PRENUM)
                                 {
                                     float[] prevVals = queueACCurve.ToArray();
 
                                     for (int j = 0; j < prevVals.Length - 1; j++)
                                     {
-                                        if (prevVals[j] > 0.01f)
+                                        if (prevVals[j] > 0.001f)
                                         {
                                             float rate = (prevVals[prevVals.Length - 1] - prevVals[j]) / prevVals[j];
                                             if (rate > 5)
@@ -430,7 +431,7 @@ namespace RecordAnalyse.Record
                             {
                                 curveList.Add(amplDense[i]);
 
-                                if (amplDense[i] < 0.1f)
+                                if (amplDense[i] < 0.06f)
                                 {
                                     if (maxCurveCnt >= MAXPT)
                                     {
@@ -449,7 +450,7 @@ namespace RecordAnalyse.Record
                                 }
 
                             }
-                            if (queueACCurve.Count >= MaxPt)
+                            if (queueACCurve.Count >= PRENUM)
                             {
                                 queueACCurve.Dequeue();
                             }

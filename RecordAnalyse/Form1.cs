@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using ConfigManager.HHFormat.Analog;
 using ConfigManager.HHDevice;
 using ConfigManager.HHFormat.Curve;
+using RecordAnalyse.Utils;
 
 namespace RecordAnalyse
 {
@@ -20,8 +21,12 @@ namespace RecordAnalyse
 
         private void button1_Click(object sender, EventArgs e)
         {
-            HHDeviceManager.GetInstance();
 
+            float[] ff = new float[1] ;
+
+            HalfFloat.Halfp2Singles(ff,new ushort[]{(ushort)0x33cd},1);
+
+            Console.WriteLine();
 
         }
 
