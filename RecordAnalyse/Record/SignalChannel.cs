@@ -263,28 +263,61 @@ namespace RecordAnalyse.Record
 
             int startIndex = freq;
             int endIndex = freq;
+
+
+            List<int> listIndex = new List<int>();
+
             if (freq < 450)
             {
                 startIndex = freq - 2 > 0 ? freq - 2 : 0;
                 endIndex = freq + 2;
+                listIndex.Add(startIndex);
+                listIndex.Add(endIndex);
+                //偶次谐波
+                startIndex = freq*2 - 2 > 0 ? freq*2 - 2 : 0;
+                endIndex = freq*2 + 2;
+                listIndex.Add(startIndex);
+                listIndex.Add(endIndex);
+                //奇次谐波
+                startIndex = freq * 3 - 2 > 0 ? freq * 3 - 2 : 0;
+                endIndex = freq * 3 + 2;
+                listIndex.Add(startIndex);
+                listIndex.Add(endIndex);
             }
             else if (freq < 1000)
             {
                 startIndex = freq - 150 > 0 ? freq - 150 : 0;
                 endIndex = freq + 150;
+                listIndex.Add(startIndex);
+                listIndex.Add(endIndex);
             }
             else if (freq < 3000)
             {
                 startIndex = freq - 100 > 0 ? freq - 100 : 0;
                 endIndex = freq + 100;
+                listIndex.Add(startIndex);
+                listIndex.Add(endIndex);
             }
-
+            
 
             float ampl = 0;
-            for (int i = startIndex; i <= endIndex; i++)
+
+            for (int i = 0; i < listIndex.Count / 2; i++)
             {
-                ampl += (data[i * 2] * data[i * 2] + data[i * 2 + 1] * data[i * 2 + 1]);
+                startIndex = listIndex[i*2];
+                endIndex = listIndex[i * 2 + 1];
+
+                for (int j = startIndex; j <= endIndex; j++)
+                {
+                    ampl += (data[j * 2] * data[j * 2] + data[j * 2 + 1] * data[j * 2 + 1]);
+                }
             }
+
+               
+
+           
+
+
             ampl = (float)(Math.Sqrt(ampl) * 2 / fftNum / Math.Sqrt(2f));
             return ampl;
         }
