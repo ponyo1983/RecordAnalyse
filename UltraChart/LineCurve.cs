@@ -631,7 +631,7 @@ namespace UltraChart
             RectangleF borderRect = disRect;
 
 
-
+            
             float lastValue = float.NaN;
             bool prevValid = false;
             long prevTime = -1;
@@ -665,6 +665,16 @@ namespace UltraChart
                     startIndex = i;
                     break;
                 }
+                List<PointF> listCurveFit = new List<PointF>();
+
+                double pixelTime = this.LineArea.CurveGroup.XAxes.TimeScale*1d / CurveGroup.ScaleSize;
+
+                bool curveFit = false;
+                if (pixelTime < 1000000d / 8000)
+                {
+                    curveFit = true;
+                }
+
                 for (int i = startIndex; i < pCnt; i++)
                 {
                     lookbackPoint = false;
@@ -695,7 +705,11 @@ namespace UltraChart
                             {
                                 float max = Math.Min(prevMax, borderRect.Height);
                                 float min = Math.Max(prevMin, 0);
-                                g.DrawLine(pen, prevX + borderRect.X, borderRect.Bottom - min, prevX + borderRect.X, borderRect.Bottom - max);
+                                if (!curveFit)
+                                {
+                                    g.DrawLine(pen, prevX + borderRect.X, borderRect.Bottom - min, prevX + borderRect.X, borderRect.Bottom - max);
+                                }
+                                
                             }
                         }
                         lastValue = float.NaN;
@@ -744,7 +758,12 @@ namespace UltraChart
                                     {
                                         float max = Math.Min(prevMax, borderRect.Height);
                                         float min = Math.Max(prevMin, 0);
-                                        g.DrawLine(pen, prevX + borderRect.X, borderRect.Bottom - min, prevX + borderRect.X, borderRect.Bottom - max);
+                                       
+                                        if(!curveFit)
+                                        {
+                                            g.DrawLine(pen, prevX + borderRect.X, borderRect.Bottom - min, prevX + borderRect.X, borderRect.Bottom - max);
+                                        }
+                                        
                                     }
                                 }
                             }
@@ -753,10 +772,14 @@ namespace UltraChart
                             {
                                 if (i > 0)
                                 {
-                                    PointF p1 = new PointF(prevX + borderRect.X, borderRect.Bottom - prevEnd);
-                                    PointF p2 = new PointF(posX + borderRect.X, borderRect.Bottom - posY);
-                                    RectangleF rectBig = new RectangleF(borderRect.X - 1, borderRect.Y - 1, borderRect.Width + 2, borderRect.Height + 2);
-                                    DrawLine(g, pen, rectBig, p1, p2);
+                                    if (!curveFit)
+                                    {
+                                        PointF p1 = new PointF(prevX + borderRect.X, borderRect.Bottom - prevEnd);
+                                        PointF p2 = new PointF(posX + borderRect.X, borderRect.Bottom - posY);
+                                        RectangleF rectBig = new RectangleF(borderRect.X - 1, borderRect.Y - 1, borderRect.Width + 2, borderRect.Height + 2);
+                                        DrawLine(g, pen, rectBig, p1, p2);
+                                    }
+                                
                                 }
                             }
                             //if (prevValid && (posX < prevX))
@@ -773,9 +796,14 @@ namespace UltraChart
                             prevValid = true;
                         }
                         //绘制点
+                        PointF pDot = new PointF(borderRect.X + posX, borderRect.Bottom - posY);
+                        if (curveFit)
+                        {
+                            listCurveFit.Add(pDot);
+                        }
                         if (this.LineArea.CurveGroup.DrawPointFlagXAxesScale >= this.LineArea.CurveGroup.XAxes.TimeScale)
                         {
-                            PointF pDot = new PointF(borderRect.X + posX, borderRect.Bottom - posY);
+                           
                             //把边框扩大1个像素
                             RectangleF rectBig = new RectangleF(borderRect.X - 1, borderRect.Y - 1, borderRect.Width + 2, borderRect.Height + 2);
                             if (rectBig.Contains(pDot))
@@ -801,6 +829,10 @@ namespace UltraChart
                         }
                     }
                     prevTime = p.Time;
+                }
+                if (curveFit)
+                {
+                    g.DrawCurve(pen, listCurveFit.ToArray(), 0.85f);
                 }
             }
         }

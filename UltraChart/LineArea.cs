@@ -537,6 +537,8 @@ namespace UltraChart
             RectangleF disRect = print ? this.PrintRectangle : this.Rectangle;
             RectangleF borderRect = this.BorderRect;
 
+            g.FillRectangle(Brushes.Black, borderRect.X - CurveGroup.MarginLeft, borderRect.Y, CurveGroup.MarginLeft, disRect.Height);
+            g.FillRectangle(Brushes.Black, borderRect.Right , borderRect.Y, CurveGroup.MarginRight, disRect.Height);
             using (Pen penBorder = new Pen(Color.FromArgb(74, 176, 72), 1.5f))
             {
                 if (print)
@@ -660,6 +662,8 @@ namespace UltraChart
         public void Paint(Graphics g, RectangleF rect,bool print)
         {
             if (!this.Visible) return;
+            //绘制曲线
+            DrawCurves(g, rect, print);
             //绘制外框
             DrawBorder(g, rect, print);
             //绘制Y刻度
@@ -671,8 +675,7 @@ namespace UltraChart
           
             //绘制标题
             DrawCaption(g, rect, print);
-            //绘制曲线
-            DrawCurves(g, rect, print);
+           
         }
 
         public override void Print(Graphics g, RectangleF rect)
