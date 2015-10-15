@@ -176,12 +176,6 @@
     <EmbeddedResource Include="..\.git\refs\heads\master">
       <Link>master</Link>
     </EmbeddedResource>
-    <None Include="Config\模拟量.rhhcfg">
-    </None>
-    <None Include="Config\记录曲线.rhhcfg">
-    </None>
-    <None Include="Config\设备.rhhcfg">
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -204,10 +198,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Config\Devices.xml">
-    </EmbeddedResource>
-    <EmbeddedResource Include="Config\DeviceType.xml">
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

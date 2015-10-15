@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ConfigManager.HHFormat.Device;
 using System.IO;
+using System.Reflection;
 
 namespace ConfigManager.HHDevice
 {
@@ -35,7 +36,34 @@ namespace ConfigManager.HHDevice
 
         private void Load(string fileName)
         {
-            if (File.Exists(fileName) == false) return;
+            if (File.Exists(fileName) == false)
+            {
+                if (File.Exists(fileName) == false)
+                {
+                    Assembly assembly = this.GetType().Assembly;
+                    System.IO.Stream smEmbeded = assembly.GetManifestResourceStream("ConfigManager.Config.设备.rhhcfg");
+
+
+                    byte[] data = new byte[smEmbeded.Length];
+
+                    smEmbeded.Read(data, 0, data.Length);
+
+
+                    //建立目录
+
+                    string dir = Path.GetDirectoryName(fileName);
+                    if (Directory.Exists(dir) == false)
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+
+
+                    File.WriteAllBytes(fileName, data);
+
+
+                    smEmbeded.Close();
+                }
+            }
             IniDocument ini = new IniDocument();
             ini.Load(fileName);
             int num = ini.GetInt("设备", "数目", 0);
