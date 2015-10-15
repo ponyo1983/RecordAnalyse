@@ -173,6 +173,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="..\.git\refs\heads\master">
+      <Link>master</Link>
+    </EmbeddedResource>
     <None Include="Config\模拟量.rhhcfg">
     </None>
     <None Include="Config\记录曲线.rhhcfg">

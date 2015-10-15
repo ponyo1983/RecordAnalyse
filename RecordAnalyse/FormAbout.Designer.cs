@@ -34,6 +34,7 @@
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,7 +59,7 @@
             // labelControl3
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 13F);
-            this.labelControl3.Location = new System.Drawing.Point(38, 135);
+            this.labelControl3.Location = new System.Drawing.Point(38, 158);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(350, 22);
             this.labelControl3.TabIndex = 3;
@@ -67,7 +68,7 @@
             // simpleButton1
             // 
             this.simpleButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.simpleButton1.Location = new System.Drawing.Point(416, 150);
+            this.simpleButton1.Location = new System.Drawing.Point(416, 157);
             this.simpleButton1.Name = "simpleButton1";
             this.simpleButton1.Size = new System.Drawing.Size(75, 27);
             this.simpleButton1.TabIndex = 4;
@@ -84,16 +85,26 @@
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
+            // labelControl4
+            // 
+            this.labelControl4.Appearance.Font = new System.Drawing.Font("Tahoma", 13F);
+            this.labelControl4.Location = new System.Drawing.Point(38, 133);
+            this.labelControl4.Name = "labelControl4";
+            this.labelControl4.Size = new System.Drawing.Size(68, 22);
+            this.labelControl4.TabIndex = 2;
+            this.labelControl4.Text = "SHA-1：";
+            // 
             // FormAbout
             // 
             this.AcceptButton = this.simpleButton1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.simpleButton1;
-            this.ClientSize = new System.Drawing.Size(518, 189);
+            this.ClientSize = new System.Drawing.Size(518, 196);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.simpleButton1);
             this.Controls.Add(this.labelControl3);
+            this.Controls.Add(this.labelControl4);
             this.Controls.Add(this.labelControl2);
             this.Controls.Add(this.labelControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -115,5 +126,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private DevExpress.XtraEditors.LabelControl labelControl4;
     }
 }
