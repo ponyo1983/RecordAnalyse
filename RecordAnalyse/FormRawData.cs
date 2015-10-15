@@ -21,7 +21,7 @@ namespace RecordAnalyse
 
         List<DateTime> listTimes = new List<DateTime>();
 
-        UltraChart.CurveGroup dayCurveGroup;
+        UltraChart.CurveGroup rawCurveGroup;
         UltraChart.CurveGroup freqCurveGroup;
 
         int secNum = 5;
@@ -36,15 +36,15 @@ namespace RecordAnalyse
         {
             InitializeComponent();
 
-            this.dayCurveGroup = this.chart.AddNewGroup();
-            this.dayCurveGroup.XAxes.MaxScale = 100000000L;
-            this.dayCurveGroup.XAxes.MinScale = 100;
-            this.dayCurveGroup.XAxes.SetScale(100000);
-            this.dayCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(DateTime.Now), 0);
-            this.dayCurveGroup.CursorType = CurveCursorType.CURSOR_CROSSLINE;
-            dayCurveGroup.XAxes.XAxesMode = XAxesMode.Relative;
+            this.rawCurveGroup = this.chart.AddNewGroup();
+            this.rawCurveGroup.XAxes.MaxScale = 100000000L;
+            this.rawCurveGroup.XAxes.MinScale = 400;
+            this.rawCurveGroup.XAxes.SetScale(100000);
+            this.rawCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(DateTime.Now), 0);
+            this.rawCurveGroup.CursorType = CurveCursorType.CURSOR_CROSSLINE;
+            rawCurveGroup.XAxes.XAxesMode = XAxesMode.Relative;
 
-            this.dayCurveGroup.DrawPointFlagXAxesScale = 500;
+            this.rawCurveGroup.DrawPointFlagXAxesScale = 500;
 
 
             this.freqCurveGroup = this.chart1.AddNewGroup();
@@ -127,9 +127,9 @@ namespace RecordAnalyse
 
             float[] data = selChannel.File.GetData(selChannel.Channel - 1, timeQuery, secNum);
 
-            dayCurveGroup.ClearChartObject();
+            rawCurveGroup.ClearChartObject();
             freqCurveGroup.ClearChartObject();
-            this.dayCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(timeQuery), 0);
+            this.rawCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(timeQuery), 0);
             this.freqCurveGroup.XAxes.SetOrgTime(ChartGraph.DateTime2ChartTime(timeQuery), 0);
             //幅度谱
             LineArea laAmpl = new LineArea(chart, "原始波形", false);
@@ -210,7 +210,7 @@ namespace RecordAnalyse
 
             }
 
-            dayCurveGroup.AddChartObject(laAmpl);
+            rawCurveGroup.AddChartObject(laAmpl);
             freqCurveGroup.AddChartObject(laFreq);
             chart.Draw();
             chart1.Draw();
@@ -294,7 +294,7 @@ namespace RecordAnalyse
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-            if (this.dayCurveGroup.CurveList.Count <= 0)
+            if (this.rawCurveGroup.CurveList.Count <= 0)
             {
                 MessageBox.Show("没有可打印的曲线！", "提示");
                 return;
@@ -305,7 +305,7 @@ namespace RecordAnalyse
         private void simpleButton3_Click(object sender, EventArgs e)
         {
 
-            if (this.dayCurveGroup.CurveList.Count == 0)
+            if (this.rawCurveGroup.CurveList.Count == 0)
             {
                 MessageBox.Show("没有可导出的曲线！", "提示");
                 return;

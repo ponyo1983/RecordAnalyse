@@ -79,7 +79,7 @@ namespace RecordAnalyse.Utils
             {
                 _DriverStream.Close();
             }
-            if (_DriverHandle.IsClosed==false)
+            if (_DriverHandle!=null && (_DriverHandle.IsClosed==false))
             {
                 _DriverHandle.Close();
             }

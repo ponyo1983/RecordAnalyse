@@ -36,7 +36,7 @@ namespace RecordAnalyse.Record
                 disk.Close();
             }
 
-            dicDisk.Clear();
+            dicDisk = new Dictionary<string, RecordDisk>();
 
         }
     }
