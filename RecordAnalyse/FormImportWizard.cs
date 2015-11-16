@@ -184,6 +184,7 @@ namespace RecordAnalyse
             {
                 labelControl5.Visible = false;
                 comboBoxEdit3.Visible = false;
+                comboBoxEdit3.SelectedIndex = -1;
                 comboBoxEdit1.Width = comboBoxEdit2.Width;
 
                 InitDevList(devGrp);
