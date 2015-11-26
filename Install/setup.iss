@@ -36,7 +36,9 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\RecordAnalyse\bin\X86\Debug\*.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\RecordAnalyse\bin\X86\Debug\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\RecordAnalyse\bin\X86\Debug\Config\*.rhhcfg"; DestDir: "{app}\Config"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
